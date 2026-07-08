@@ -7,6 +7,16 @@
 
 # Keep Obsidian snippet configuration.
 !.obsidian/
+!.obsidian/app.json
 !.obsidian/appearance.json
+!.obsidian/community-plugins.json
+!.obsidian/core-plugins.json
+!.obsidian/hotkeys.json
+!.obsidian/plugins/
+!.obsidian/plugins/obsidian-style-settings/
+!.obsidian/plugins/obsidian-style-settings/data.json
+!.obsidian/plugins/obsidian-style-settings/main.js
+!.obsidian/plugins/obsidian-style-settings/manifest.json
+!.obsidian/plugins/obsidian-style-settings/styles.css
 !.obsidian/snippets/
 !.obsidian/snippets/mystyle.css
