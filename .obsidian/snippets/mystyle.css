@@ -721,6 +721,99 @@ body {
   border-left: 2px solid var(--custom-folder-level-5);
 }
 
+/* Retro file tree */
+.nav-files-container {
+  background:
+    linear-gradient(rgba(47, 111, 187, 0.04) 50%, transparent 50%) 0 0 / 100% 4px,
+    #dce6ef;
+  border-right: 1px solid #8fa1b6;
+}
+
+.nav-file-title,
+.nav-folder-title {
+  border-radius: 0;
+  font-family: var(--font-monospace);
+  letter-spacing: 0;
+}
+
+.nav-files-container > div > .nav-folder {
+  background-color: #e5edf4;
+  border: 1px solid #7f95ad;
+  border-radius: 0;
+  box-shadow: 2px 2px 0 rgba(23, 33, 48, 0.18);
+  margin: 6px 2px 8px;
+}
+
+.nav-folder-title {
+  border-bottom: 1px solid rgba(23, 33, 48, 0.12);
+  min-height: 24px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  text-transform: uppercase;
+}
+
+.nav-files-container > div > .nav-folder > .nav-folder-title {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.18)),
+    var(--custom-folder-bg-1);
+  border-bottom: 2px solid var(--custom-folder-level-1);
+}
+
+.nav-folder-children > .nav-folder > .nav-folder-title,
+.nav-folder-children
+  .nav-folder-children
+  > .nav-folder
+  > .nav-folder-title,
+.nav-folder-children
+  .nav-folder-children
+  .nav-folder-children
+  > .nav-folder
+  > .nav-folder-title,
+.nav-folder-children
+  .nav-folder-children
+  .nav-folder-children
+  .nav-folder-children
+  > .nav-folder
+  > .nav-folder-title {
+  border-bottom-style: dashed;
+}
+
+.nav-file-title {
+  min-height: 22px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.nav-file-title:hover {
+  background-color: rgba(255, 255, 255, 0.45);
+  box-shadow: inset 2px 0 0 #8b6bc3;
+}
+
+.nav-file-title.is-active,
+.nav-file-title.is-active:hover {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(47, 111, 187, 0.16) 0,
+      rgba(47, 111, 187, 0.16) 6px,
+      rgba(47, 111, 187, 0.24) 6px,
+      rgba(47, 111, 187, 0.24) 12px
+    );
+  border: 1px solid #1d5fa7;
+  border-radius: 0;
+  box-shadow:
+    inset 4px 0 0 #1d5fa7,
+    2px 2px 0 rgba(23, 33, 48, 0.16);
+}
+
+.nav-file-title.is-active::before {
+  display: none;
+}
+
+.nav-file-title.is-active .nav-file-title-content {
+  color: #083d70;
+}
+
 /* Tables */
 
 .markdown-rendered table,
