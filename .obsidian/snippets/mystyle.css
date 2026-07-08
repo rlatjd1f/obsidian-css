@@ -4,8 +4,8 @@ id: custom-obsidian-chrome
 settings:
   -
     id: file-tree-style
-    title: File tree sidebar style
-    description: Choose the non-editor file tree sidebar theme. Markdown content keeps its separate dark surface.
+    title: 본문 제외 UI 테마
+    description: 본문 markdown 영역을 제외한 상단바, 사이드바, 상태바, 파일트리 테마를 선택합니다.
     type: class-select
     allowEmpty: false
     default: file-tree-standard
@@ -1391,4 +1391,137 @@ body .workspace-leaf-content[data-type="markdown"] .view-header svg,
 body .workspace-leaf-content[data-type="markdown"] .view-header .svg-icon {
   color: #4d5e73 !important;
   stroke: #4d5e73 !important;
+}
+
+/* Selectable non-editor UI themes */
+body.file-tree-retro {
+  --custom-chrome-bg: #dce6ef;
+  --custom-chrome-bg-2: #cfdce8;
+  --custom-chrome-bg-3: #e5edf4;
+  --custom-chrome-border: #7f95ad;
+  --custom-chrome-text: #1b2b3d;
+  --custom-chrome-muted: #43566b;
+  --custom-chrome-active-bg: #eef5fb;
+  --custom-chrome-active-text: #083d70;
+  --custom-chrome-accent: #1d5fa7;
+}
+
+body.file-tree-f1 {
+  --custom-chrome-bg: #f1f4f8;
+  --custom-chrome-bg-2: #e1e7f0;
+  --custom-chrome-bg-3: #ffffff;
+  --custom-chrome-border: #111827;
+  --custom-chrome-text: #111827;
+  --custom-chrome-muted: #374151;
+  --custom-chrome-active-bg: #ffffff;
+  --custom-chrome-active-text: #111827;
+  --custom-chrome-accent: #e10600;
+}
+
+body:is(.file-tree-retro, .file-tree-f1) .titlebar,
+body:is(.file-tree-retro, .file-tree-f1) .titlebar-inner,
+body:is(.file-tree-retro, .file-tree-f1) .titlebar-button-container,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-tab-header-container,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-tab-header-container-inner,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-tab-header-spacer,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-tab-header-new-tab,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-tab-header-tab-list,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-tab-container-before,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-tab-container-after,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-ribbon,
+body:is(.file-tree-retro, .file-tree-f1) .mod-left-split,
+body:is(.file-tree-retro, .file-tree-f1) .mod-right-split,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-sidedock-vault-profile,
+body:is(.file-tree-retro, .file-tree-f1) .status-bar,
+body:is(.file-tree-retro, .file-tree-f1) .sidebar-toggle-button,
+body:is(.file-tree-retro, .file-tree-f1) .view-header,
+body:is(.file-tree-retro, .file-tree-f1) .view-header-title-container,
+body:is(.file-tree-retro, .file-tree-f1) .view-actions,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-leaf-content:not([data-type="markdown"]) {
+  background: var(--custom-chrome-bg) !important;
+  border-color: var(--custom-chrome-border) !important;
+  color: var(--custom-chrome-text) !important;
+}
+
+body:is(.file-tree-retro, .file-tree-f1) .workspace-tab-header {
+  background: var(--custom-chrome-bg-2) !important;
+  border-color: var(--custom-chrome-border) !important;
+  color: var(--custom-chrome-muted) !important;
+}
+
+body:is(.file-tree-retro, .file-tree-f1) .workspace-tab-header.is-active,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-tab-header.mod-active {
+  background: var(--custom-chrome-active-bg) !important;
+  box-shadow: inset 0 -3px 0 var(--custom-chrome-accent) !important;
+  color: var(--custom-chrome-active-text) !important;
+}
+
+body:is(.file-tree-retro, .file-tree-f1) .workspace-tab-header-inner-title,
+body:is(.file-tree-retro, .file-tree-f1) .view-header-title,
+body:is(.file-tree-retro, .file-tree-f1) .view-action,
+body:is(.file-tree-retro, .file-tree-f1) .clickable-icon,
+body:is(.file-tree-retro, .file-tree-f1) .status-bar,
+body:is(.file-tree-retro, .file-tree-f1) .status-bar * {
+  color: var(--custom-chrome-text) !important;
+  opacity: 1 !important;
+}
+
+body:is(.file-tree-retro, .file-tree-f1) .workspace-ribbon .clickable-icon,
+body:is(.file-tree-retro, .file-tree-f1) .view-header .clickable-icon,
+body:is(.file-tree-retro, .file-tree-f1) .sidebar-toggle-button .clickable-icon,
+body:is(.file-tree-retro, .file-tree-f1) .sidebar-toggle-button svg,
+body:is(.file-tree-retro, .file-tree-f1) .sidebar-toggle-button .svg-icon {
+  color: var(--custom-chrome-muted) !important;
+  stroke: var(--custom-chrome-muted) !important;
+}
+
+body.file-tree-retro .titlebar,
+body.file-tree-retro .workspace-tab-header-container,
+body.file-tree-retro .workspace-ribbon,
+body.file-tree-retro .mod-left-split,
+body.file-tree-retro .mod-right-split,
+body.file-tree-retro .status-bar,
+body.file-tree-retro .view-header {
+  background:
+    linear-gradient(rgba(47, 111, 187, 0.04) 50%, transparent 50%) 0 0 / 100% 4px,
+    var(--custom-chrome-bg) !important;
+}
+
+body.file-tree-f1 .titlebar,
+body.file-tree-f1 .workspace-tab-header-container,
+body.file-tree-f1 .workspace-ribbon,
+body.file-tree-f1 .mod-left-split,
+body.file-tree-f1 .mod-right-split,
+body.file-tree-f1 .status-bar,
+body.file-tree-f1 .view-header {
+  background:
+    linear-gradient(90deg, rgba(225, 6, 0, 0.16), transparent 42px),
+    var(--custom-chrome-bg) !important;
+}
+
+body.file-tree-f1 .workspace-tab-header.is-active,
+body.file-tree-f1 .workspace-tab-header.mod-active {
+  border-top: 2px solid #e10600 !important;
+}
+
+body.file-tree-f1 .workspace-ribbon {
+  box-shadow: inset 4px 0 0 #e10600 !important;
+}
+
+body.file-tree-retro .workspace-ribbon {
+  box-shadow: inset 2px 0 0 #1d5fa7 !important;
+}
+
+body:is(.file-tree-retro, .file-tree-f1) .workspace-leaf-content[data-type="markdown"],
+body:is(.file-tree-retro, .file-tree-f1) .workspace-leaf-content[data-type="markdown"] .view-content,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-leaf-content[data-type="markdown"] .markdown-source-view,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-leaf-content[data-type="markdown"] .markdown-reading-view,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-leaf-content[data-type="markdown"] .markdown-preview-view,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-leaf-content[data-type="markdown"] .markdown-preview-sizer,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-leaf-content[data-type="markdown"] .cm-editor,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-leaf-content[data-type="markdown"] .cm-scroller,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-leaf-content[data-type="markdown"] .cm-contentContainer,
+body:is(.file-tree-retro, .file-tree-f1) .workspace-leaf-content[data-type="markdown"] .cm-content {
+  background: var(--custom-markdown-bg) !important;
+  color: var(--custom-markdown-text) !important;
 }
