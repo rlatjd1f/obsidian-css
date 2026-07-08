@@ -11,10 +11,10 @@ settings:
     default: file-tree-standard
     options:
       -
-        label: Standard
+        label: 일반
         value: file-tree-standard
       -
-        label: Retro
+        label: 레트로
         value: file-tree-retro
 */
 
