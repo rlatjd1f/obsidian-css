@@ -1,0 +1,12 @@
+# Ignore vault content by default; this repo tracks the Obsidian CSS customization.
+*
+
+# Keep git/project metadata.
+!.gitignore
+!AGENTS.md
+
+# Keep Obsidian snippet configuration.
+!.obsidian/
+!.obsidian/appearance.json
+!.obsidian/snippets/
+!.obsidian/snippets/mystyle.css
