@@ -1,3 +1,23 @@
+/* @settings
+name: Custom Obsidian Chrome
+id: custom-obsidian-chrome
+settings:
+  -
+    id: file-tree-style
+    title: File tree sidebar style
+    description: Choose the non-editor file tree sidebar theme. Markdown content keeps its separate dark surface.
+    type: class-select
+    allowEmpty: false
+    default: file-tree-standard
+    options:
+      -
+        label: Standard
+        value: file-tree-standard
+      -
+        label: Retro
+        value: file-tree-retro
+*/
+
 /* Editor width */
 body {
   --line-width: 75rem;
@@ -722,21 +742,21 @@ body {
 }
 
 /* Retro file tree */
-.nav-files-container {
+body.file-tree-retro .nav-files-container {
   background:
     linear-gradient(rgba(47, 111, 187, 0.04) 50%, transparent 50%) 0 0 / 100% 4px,
     #dce6ef;
   border-right: 1px solid #8fa1b6;
 }
 
-.nav-file-title,
-.nav-folder-title {
+body.file-tree-retro .nav-file-title,
+body.file-tree-retro .nav-folder-title {
   border-radius: 0;
   font-family: var(--font-monospace);
   letter-spacing: 0;
 }
 
-.nav-files-container > div > .nav-folder {
+body.file-tree-retro .nav-files-container > div > .nav-folder {
   background-color: #e5edf4;
   border: 1px solid #7f95ad;
   border-radius: 0;
@@ -744,7 +764,7 @@ body {
   margin: 6px 2px 8px;
 }
 
-.nav-folder-title {
+body.file-tree-retro .nav-folder-title {
   border-bottom: 1px solid rgba(23, 33, 48, 0.12);
   min-height: 24px;
   padding-top: 3px;
@@ -752,24 +772,24 @@ body {
   text-transform: uppercase;
 }
 
-.nav-files-container > div > .nav-folder > .nav-folder-title {
+body.file-tree-retro .nav-files-container > div > .nav-folder > .nav-folder-title {
   background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.18)),
     var(--custom-folder-bg-1);
   border-bottom: 2px solid var(--custom-folder-level-1);
 }
 
-.nav-folder-children > .nav-folder > .nav-folder-title,
-.nav-folder-children
+body.file-tree-retro .nav-folder-children > .nav-folder > .nav-folder-title,
+body.file-tree-retro .nav-folder-children
   .nav-folder-children
   > .nav-folder
   > .nav-folder-title,
-.nav-folder-children
+body.file-tree-retro .nav-folder-children
   .nav-folder-children
   .nav-folder-children
   > .nav-folder
   > .nav-folder-title,
-.nav-folder-children
+body.file-tree-retro .nav-folder-children
   .nav-folder-children
   .nav-folder-children
   .nav-folder-children
@@ -778,19 +798,19 @@ body {
   border-bottom-style: dashed;
 }
 
-.nav-file-title {
+body.file-tree-retro .nav-file-title {
   min-height: 22px;
   padding-top: 2px;
   padding-bottom: 2px;
 }
 
-.nav-file-title:hover {
+body.file-tree-retro .nav-file-title:hover {
   background-color: rgba(255, 255, 255, 0.45);
   box-shadow: inset 2px 0 0 #8b6bc3;
 }
 
-.nav-file-title.is-active,
-.nav-file-title.is-active:hover {
+body.file-tree-retro .nav-file-title.is-active,
+body.file-tree-retro .nav-file-title.is-active:hover {
   background:
     repeating-linear-gradient(
       90deg,
@@ -806,11 +826,11 @@ body {
     2px 2px 0 rgba(23, 33, 48, 0.16);
 }
 
-.nav-file-title.is-active::before {
+body.file-tree-retro .nav-file-title.is-active::before {
   display: none;
 }
 
-.nav-file-title.is-active .nav-file-title-content {
+body.file-tree-retro .nav-file-title.is-active .nav-file-title-content {
   color: #083d70;
 }
 
