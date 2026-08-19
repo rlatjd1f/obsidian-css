@@ -21,24 +21,274 @@ settings:
         value: file-tree-f1
 */
 
-/* Editor width */
+/* ==========================================================================
+   Editor & Reading View Unified Layout & Typography
+   (편집 모드와 읽기 모드 스타일을 읽기 모드 기준으로 일관되게 고정)
+   ========================================================================== */
+
 body {
   --line-width: 75rem;
   --line-width-adaptive: var(--line-width);
   --line-width-wide: calc(var(--line-width) + 12.5%);
   --file-line-width: var(--line-width);
+  --line-height: 1.7;
+  --line-height-normal: 1.7;
+  --font-text-size: 16px;
+  --p-spacing: 1rem;
+  --heading-spacing: 1.4rem 0 0.5rem;
+  --list-spacing: 0.22rem;
 }
 
+/* 1. Editor width & Reading view width sync (가로 너비 및 좌우 패딩 1:1 완벽 일치) */
 .markdown-source-view.mod-cm6.is-readable-line-width .cm-sizer,
+.markdown-reading-view.is-readable-line-width .markdown-preview-sizer,
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer {
+  margin-inline: auto !important;
+  width: min(var(--line-width), 92%) !important;
+  max-width: min(var(--line-width), 92%) !important;
+  box-sizing: border-box !important;
+}
+
+/* 편집 모드 내부 컨테이너의 중첩 너비 축소 방지 (sizer 폭을 100% 온전히 사용) */
 .markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer,
 .markdown-source-view.mod-cm6.is-readable-line-width .cm-content {
-  width: min(var(--line-width), 90%);
-  max-width: min(var(--line-width), 90%);
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
-/* Reading view */
-.markdown-reading-view.is-readable-line-width .markdown-preview-sizer {
-  max-width: min(var(--line-width), 90%);
+.markdown-source-view.mod-cm6.is-readable-line-width .cm-line {
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* 코드 블록 및 수평선 폭을 읽기 모드와 동일하게 확장 */
+.markdown-source-view.mod-cm6 .HyperMD-codeblock,
+.markdown-source-view.mod-cm6 .HyperMD-codeblock-bg,
+.markdown-source-view.mod-cm6 .cm-embed-block {
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* --------------------------------------------------------------------------
+   코드 블록 상하 1rem 여백 고정 (편집 모드 & 읽기 모드 1:1 동기화)
+   -------------------------------------------------------------------------- */
+
+/* 1. 편집 모드 (Live Preview / Source View) - 커서 점프 없는 안전한 외부 여백 1rem */
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock.HyperMD-codeblock-begin {
+  margin-top: 0 !important;
+  border-top: 1rem solid transparent !important;
+  background-clip: padding-box !important;
+}
+
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock.HyperMD-codeblock-end {
+  margin-bottom: 0 !important;
+  border-bottom: 1rem solid transparent !important;
+  background-clip: padding-box !important;
+}
+
+.markdown-source-view.mod-cm6 .cm-embed-block:has(.block-language-),
+.markdown-source-view.mod-cm6 .cm-embed-block:has(pre) {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+/* 2. 읽기 모드 (Reading View) */
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered pre,
+.workspace-leaf-content[data-type="markdown"] .markdown-preview-view pre,
+.markdown-rendered pre {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+/* 2. Document title (문서 제목 위치 및 스타일 통일) */
+.workspace-leaf-content[data-type="markdown"] .inline-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+}
+
+/* 3. Body line spacing (본문 줄간격 통일) */
+.workspace-leaf-content[data-type="markdown"]
+  .markdown-source-view.mod-cm6
+  .cm-line:not(.HyperMD-header):not(.HyperMD-codeblock),
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered p,
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered li,
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered div:not(.math):not(.mermaid) {
+  line-height: var(--line-height);
+}
+
+/* 단락 여백 통일 (Reading view 단락 간격과 편집 모드 빈 줄/단락 흐름 일치) */
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered p {
+  margin-block-start: var(--p-spacing);
+  margin-block-end: var(--p-spacing);
+}
+
+/* 연속된 엔터(빈 줄)를 읽기 모드에서도 편집 모드와 1:1로 보존 */
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered p:empty,
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered p:has(> br:only-child),
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered div:empty {
+  display: block !important;
+  min-height: calc(1em * var(--line-height, 1.6)) !important;
+  margin-block-start: 0 !important;
+  margin-block-end: 0 !important;
+}
+
+/* 읽기 모드 br 줄바꿈 높이 보장 */
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered br {
+  display: inline-block !important;
+  height: calc(1em * var(--line-height, 1.6)) !important;
+  vertical-align: middle !important;
+}
+
+/* 편집 모드 헤딩 폰트 크기 보장 (H1~H6 개별 크기 적용) */
+.markdown-source-view.mod-cm6 .HyperMD-header-1,
+.markdown-source-view.mod-cm6 .cm-header-1 {
+  font-size: var(--h1-size, 1.7rem) !important;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-header-2,
+.markdown-source-view.mod-cm6 .cm-header-2 {
+  font-size: var(--h2-size, 1.5rem) !important;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-header-3,
+.markdown-source-view.mod-cm6 .cm-header-3 {
+  font-size: var(--h3-size, 1.2rem) !important;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-header-4,
+.markdown-source-view.mod-cm6 .cm-header-4 {
+  font-size: var(--h4-size, 1.1rem) !important;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-header-5,
+.markdown-source-view.mod-cm6 .cm-header-5 {
+  font-size: var(--h5-size, 1rem) !important;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-header-6,
+.markdown-source-view.mod-cm6 .cm-header-6 {
+  font-size: var(--h6-size, 0.9rem) !important;
+}
+
+/* 4. List markers, indent & spacing sync (리스트 시작 위치, 들여쓰기 폭, 줄간격을 편집 모드와 1:1 일치) */
+body,
+.workspace-leaf-content[data-type="markdown"] {
+  --list-marker-color: #7dd3fc;
+  --list-marker-color-collapsed: #bae6fd;
+  --list-marker-color-hover: #e0f2fe;
+  --list-indent: 0.85em !important;
+  --nested-padding: 0.85em !important;
+  --list-spacing: 0px !important;
+}
+
+/* 최상위 리스트 시작 위치: 숫자 마커 '1.'이 본문 시작 라인(X=0)에 정확히 일치 */
+.markdown-rendered ol,
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered ol {
+  padding-inline-start: 0.95em !important;
+  margin-block-start: 0.15rem !important;
+  margin-block-end: 0.15rem !important;
+  margin-left: 0 !important;
+}
+
+.markdown-rendered ul,
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered ul {
+  padding-inline-start: 0.95em !important;
+  margin-block-start: 0.15rem !important;
+  margin-block-end: 0.15rem !important;
+  margin-left: 0 !important;
+}
+
+/* 중첩(하위) 리스트 들여쓰기 폭: 편집 모드의 2칸 스페이스/탭 위치에 정확히 일치 */
+.markdown-rendered li > ol,
+.markdown-rendered li > ul,
+.markdown-rendered ul ul,
+.markdown-rendered ol ol,
+.markdown-rendered ul ol,
+.markdown-rendered ol ul,
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered li > ol,
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered li > ul {
+  padding-inline-start: 0.85em !important;
+  margin-block-start: 0 !important;
+  margin-block-end: 0 !important;
+  margin-left: 0 !important;
+}
+
+/* 리스트 항목 간격: 편집 모드와 동일하게 컴팩트한 줄간격 유지 */
+.markdown-rendered li,
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered li {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: var(--line-height) !important;
+}
+
+.markdown-rendered li > p,
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered li > p {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  margin-block: 0 !important;
+  line-height: var(--line-height) !important;
+}
+
+.workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .HyperMD-list-line {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: var(--line-height) !important;
+}
+
+/* 불필요하게 넓은 인덴트 가이드라인 숨김 */
+.markdown-rendered .list-indent-guide {
+  display: none !important;
+}
+
+.workspace-leaf-content[data-type="markdown"]
+  .markdown-source-view.mod-cm6
+  .cm-formatting-list-ol,
+.workspace-leaf-content[data-type="markdown"]
+  .markdown-source-view.mod-cm6
+  .cm-formatting-list-ul,
+.workspace-leaf-content[data-type="markdown"]
+  .markdown-rendered
+  ol
+  > li::marker,
+.workspace-leaf-content[data-type="markdown"]
+  .markdown-rendered
+  ul
+  > li::marker {
+  color: #7dd3fc;
+  font-weight: 700;
+  opacity: 1;
+}
+
+.workspace-leaf-content[data-type="markdown"]
+  .markdown-source-view.mod-cm6
+  .list-bullet::after {
+  background-color: #7dd3fc;
+  opacity: 1;
+}
+
+/* 6. Blockquote sync (인용구 스타일 및 여백 통일) */
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered blockquote,
+.workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .HyperMD-quote {
+  border-left: 3px solid #3eb4bf;
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+  padding: 0.35rem 0.9rem;
+  font-style: italic;
+  line-height: var(--line-height);
+}
+
+/* 7. Horizontal Rule (수평선 여백 통일) */
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered hr,
+.workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .cm-hr {
+  margin-top: 1.8rem;
+  margin-bottom: 1.8rem;
+  border-color: var(--background-modifier-border);
 }
 
 /* Headings */
@@ -206,160 +456,7 @@ body {
   color: var(--icon-color-hover);
 }
 
-/* Settings */
-.modal.mod-settings,
-.modal.mod-settings *,
-.modal.mod-settings .modal-content,
-.modal.mod-settings .vertical-tab-header,
-.modal.mod-settings .vertical-tab-content {
-  --background-primary: #f8fafc;
-  --background-secondary: #eef3f8;
-  --background-secondary-alt: #e2eaf4;
-  --background-modifier-border: #c7d2e0;
-  --background-modifier-form-field: #ffffff;
-  --background-modifier-form-field-highlighted: #f8fafc;
-  --background-modifier-hover: rgba(47, 111, 187, 0.08);
-  --interactive-normal: #eef3f8;
-  --interactive-hover: #e2eaf4;
-  --interactive-accent: #2f6fbb;
-  --interactive-accent-hover: #245c9f;
-  --text-normal: #111827;
-  --text-muted: #2f4055;
-  --text-faint: #53657a;
-  color: var(--text-normal);
-}
 
-.modal.mod-settings,
-.modal.mod-settings .modal-content,
-.modal.mod-settings .vertical-tab-container,
-.modal.mod-settings .vertical-tab-content-container,
-.modal.mod-settings .vertical-tab-content,
-.modal.mod-settings .modal {
-  background-color: #f8fafc;
-}
-
-.modal.mod-settings .vertical-tab-header {
-  background-color: #eef3f8;
-  border-right-color: #c7d2e0;
-}
-
-.modal.mod-settings .vertical-tab-content,
-.modal.mod-settings .setting-item,
-.modal.mod-settings .setting-item-control,
-.modal.mod-settings .setting-item-info,
-.modal.mod-settings .setting-command-hotkeys,
-.modal.mod-settings .community-modal-sidebar,
-.modal.mod-settings .community-modal-readme {
-  background-color: #f8fafc;
-}
-
-.modal.mod-settings .setting-item,
-.modal.mod-settings .setting-item-control,
-.modal.mod-settings .setting-item-info,
-.modal.mod-settings .setting-command-hotkeys,
-.modal.mod-settings .setting-component,
-.modal.mod-settings .setting-item-heading,
-.modal.mod-settings .setting-editor-extra-setting-button,
-.modal.mod-settings .modal-button-container {
-  box-shadow: none;
-  outline: none;
-}
-
-.modal.mod-settings .setting-item-name,
-.modal.mod-settings .setting-item-description,
-.modal.mod-settings .vertical-tab-nav-item,
-.modal.mod-settings .vertical-tab-header-group-title,
-.modal.mod-settings .setting-item-info,
-.modal.mod-settings .setting-item-control,
-.modal.mod-settings .setting-item-heading,
-.modal.mod-settings .setting-item-heading *,
-.modal.mod-settings label {
-  color: var(--text-normal);
-  opacity: 1;
-}
-
-.modal.mod-settings .setting-item-description {
-  color: var(--text-muted);
-}
-
-.modal.mod-settings .setting-item {
-  border-color: #d8e1ec;
-}
-
-.modal.mod-settings .setting-item.mod-toggle,
-.modal.mod-settings .setting-item.mod-slider,
-.modal.mod-settings .setting-item.mod-search {
-  background-color: #f8fafc;
-}
-
-.modal.mod-settings .vertical-tab-content > div,
-.modal.mod-settings .setting-item > div,
-.modal.mod-settings .setting-item-control > div {
-  border-color: #d8e1ec;
-  box-shadow: none;
-  outline: none;
-}
-
-.modal.mod-settings .setting-item-control,
-.modal.mod-settings .setting-item-info {
-  border: 0;
-}
-
-.modal.mod-settings input,
-.modal.mod-settings textarea,
-.modal.mod-settings select,
-.modal.mod-settings .dropdown,
-.modal.mod-settings .search-input-container input,
-.modal.mod-settings .setting-hotkey,
-.modal.mod-settings .clickable-icon,
-.modal.mod-settings button {
-  background-color: #ffffff;
-  color: #111827;
-  border-color: var(--background-modifier-border);
-}
-
-.modal.mod-settings button.mod-cta,
-.modal.mod-settings button.mod-warning,
-.modal.mod-settings .mod-cta {
-  background-color: #2f6fbb;
-  color: #ffffff;
-}
-
-.modal.mod-settings .vertical-tab-nav-item.is-active {
-  background-color: rgba(47, 111, 187, 0.14);
-  color: #0f3268;
-  font-weight: 700;
-}
-
-.modal.mod-settings button,
-.modal.mod-settings .clickable-icon,
-.modal.mod-settings .setting-hotkey,
-.modal.mod-settings a {
-  color: #17345c;
-  opacity: 1;
-}
-
-.modal.mod-settings .checkbox-container,
-.modal.mod-settings .slider,
-.modal.mod-settings .multi-select-pill {
-  color: #111827;
-}
-
-.modal.mod-settings .checkbox-container {
-  background-color: #c7d2e0;
-}
-
-.modal.mod-settings .checkbox-container.is-enabled {
-  background-color: #2f6fbb;
-}
-
-.modal.mod-settings .slider::-webkit-slider-runnable-track {
-  background-color: #c7d2e0;
-}
-
-.modal.mod-settings .slider::-webkit-slider-thumb {
-  background-color: #2f6fbb;
-}
 
 /* Markdown surface */
 .workspace-leaf-content[data-type="markdown"] {
@@ -1033,197 +1130,421 @@ body.file-tree-f1 .nav-file-title.is-active .nav-file-title-content {
   background-color: rgba(121, 184, 255, 0.16);
 }
 
-/* Settings white override */
-.modal.mod-settings,
-.modal.mod-settings *,
-.modal.mod-settings .modal-content,
-.modal.mod-settings .vertical-tab-container,
-.modal.mod-settings .vertical-tab-content-container,
-.modal.mod-settings .vertical-tab-header,
-.modal.mod-settings .vertical-tab-content,
-.modal.mod-settings .setting-item,
-.modal.mod-settings .setting-item-info,
-.modal.mod-settings .setting-item-control {
-  --background-primary: #f8fafc !important;
-  --background-secondary: #eef3f8 !important;
-  --background-secondary-alt: #e2eaf4 !important;
+/* ==========================================================================
+   Settings Modal Pure White Theme (설정창 전체 화이트 테마 완전 통합)
+   ========================================================================== */
+
+:is(.theme-dark, .theme-light, body) .modal.mod-settings,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings *,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings *::before,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings *::after,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container),
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) *,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) *::before,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) *::after {
+  --background-primary: #ffffff !important;
+  --background-primary-alt: #f8fafc !important;
+  --background-secondary: #ffffff !important;
+  --background-secondary-alt: #f1f5f9 !important;
   --background-modifier-border: #d8e1ec !important;
+  --background-modifier-border-hover: #94a3b8 !important;
+  --background-modifier-border-focus: #2f6fbb !important;
   --background-modifier-form-field: #ffffff !important;
-  --interactive-normal: #eef3f8 !important;
+  --background-modifier-form-field-highlighted: #f8fafc !important;
+  --background-modifier-hover: rgba(47, 111, 187, 0.08) !important;
+  --background-modifier-active-hover: rgba(47, 111, 187, 0.14) !important;
+  --color-base-00: #ffffff !important;
+  --color-base-05: #f8fafc !important;
+  --color-base-10: #f8fafc !important;
+  --color-base-20: #ffffff !important;
+  --color-base-25: #f1f5f9 !important;
+  --color-base-30: #e2eaf4 !important;
+  --color-base-35: #d8e1ec !important;
+  --color-base-40: #cbd5e1 !important;
+  --color-base-50: #94a3b8 !important;
+  --color-base-60: #64748b !important;
+  --color-base-70: #475569 !important;
+  --color-base-100: #0f172a !important;
+  --text-normal: #0f172a !important;
+  --text-muted: #475569 !important;
+  --text-faint: #64748b !important;
+  --icon-color: #475569 !important;
+  --icon-color-hover: #0f172a !important;
+  --interactive-normal: #f1f5f9 !important;
   --interactive-hover: #e2eaf4 !important;
-  --text-normal: #111827 !important;
-  --text-muted: #2f4055 !important;
-  --text-faint: #53657a !important;
-  border-color: #d8e1ec !important;
-  box-shadow: none !important;
-  color: #111827 !important;
-  outline: none !important;
+  --interactive-accent: #2f6fbb !important;
+  --interactive-accent-hover: #245c9f !important;
 }
 
-.modal.mod-settings,
-.modal.mod-settings .modal-content,
-.modal.mod-settings .vertical-tab-container,
-.modal.mod-settings .vertical-tab-content-container,
-.modal.mod-settings .vertical-tab-content,
-.modal.mod-settings .setting-item,
-.modal.mod-settings .setting-item-info,
-.modal.mod-settings .setting-item-control {
+/* 모달 본체 및 컨테이너 */
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)),
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .modal-content,
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .vertical-tab-container,
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .vertical-tab-content-container,
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .vertical-tab-content {
   background: #f8fafc !important;
+  background-color: #f8fafc !important;
+  border-color: #d8e1ec !important;
+  color: #0f172a !important;
 }
 
-.modal.mod-settings .vertical-tab-header {
+/* 좌측 사이드바 탭 목록 */
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .vertical-tab-header {
   background: #eef3f8 !important;
+  background-color: #eef3f8 !important;
+  border-right: 1px solid #d8e1ec !important;
 }
 
-.modal.mod-settings input,
-.modal.mod-settings textarea,
-.modal.mod-settings select,
-.modal.mod-settings button,
-.modal.mod-settings .dropdown,
-.modal.mod-settings .search-input-container input,
-.modal.mod-settings .setting-hotkey,
-.modal.mod-settings .multi-select-pill {
-  background: #ffffff !important;
-  border-color: #c7d2e0 !important;
-  box-shadow: none !important;
-  color: #111827 !important;
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .vertical-tab-header-group-title {
+  color: #64748b !important;
+  -webkit-text-fill-color: #64748b !important;
+  font-weight: 600 !important;
 }
 
-.modal.mod-settings button.mod-cta,
-.modal.mod-settings .mod-cta,
-.modal.mod-settings .checkbox-container.is-enabled {
-  background: #2f6fbb !important;
-  color: #ffffff !important;
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .vertical-tab-nav-item {
+  color: #334155 !important;
+  -webkit-text-fill-color: #334155 !important;
 }
 
-body .modal-container .modal.mod-settings,
-body .modal-container .modal.mod-settings .modal-content,
-body .modal-container .modal.mod-settings .vertical-tab-container,
-body .modal-container .modal.mod-settings .vertical-tab-content-container,
-body .modal-container .modal.mod-settings .vertical-tab-content {
-  background: #f8fafc !important;
-  border-color: #d8e1ec !important;
-  box-shadow: none !important;
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .vertical-tab-nav-item:hover {
+  background: #e2eaf4 !important;
+  background-color: #e2eaf4 !important;
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
 }
 
-body .modal-container .modal.mod-settings *,
-body .modal-container .modal.mod-settings *::before,
-body .modal-container .modal.mod-settings *::after {
-  border-color: #d8e1ec !important;
-  box-shadow: none !important;
-  outline: none !important;
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .vertical-tab-nav-item.is-active {
+  background: rgba(47, 111, 187, 0.14) !important;
+  background-color: rgba(47, 111, 187, 0.14) !important;
+  color: #0f3268 !important;
+  -webkit-text-fill-color: #0f3268 !important;
+  font-weight: 700 !important;
 }
 
-body .modal-container .modal.mod-settings .setting-item,
-body .modal-container .modal.mod-settings .setting-item-info,
-body .modal-container .modal.mod-settings .setting-item-control,
-body .modal-container .modal.mod-settings .setting-item-description,
-body .modal-container .modal.mod-settings .setting-item-name,
-body .modal-container .modal.mod-settings .setting-item-heading,
-body .modal-container .modal.mod-settings .setting-command-hotkeys,
-body .modal-container .modal.mod-settings .setting-editor-extra-setting-button {
-  background: transparent !important;
-}
-
-body .modal-container .modal.mod-settings input,
-body .modal-container .modal.mod-settings textarea,
-body .modal-container .modal.mod-settings select,
-body .modal-container .modal.mod-settings button,
-body .modal-container .modal.mod-settings .dropdown,
-body .modal-container .modal.mod-settings .search-input-container,
-body .modal-container .modal.mod-settings .search-input-container input,
-body .modal-container .modal.mod-settings .setting-hotkey,
-body .modal-container .modal.mod-settings .multi-select-pill {
-  background: #ffffff !important;
-  color: #111827 !important;
-}
-
-body .modal-container .modal:has(.vertical-tab-container),
-body .modal-container .modal:has(.vertical-tab-container) .modal-content,
-body .modal-container .modal:has(.vertical-tab-container) .vertical-tab-container,
-body .modal-container .modal:has(.vertical-tab-container) .vertical-tab-content-container,
-body .modal-container .modal:has(.vertical-tab-container) .vertical-tab-content {
-  background: #f8fafc !important;
-  border-color: #d8e1ec !important;
-  box-shadow: none !important;
-  color: #111827 !important;
-}
-
-body .modal-container .modal:has(.vertical-tab-container) *,
-body .modal-container .modal:has(.vertical-tab-container) *::before,
-body .modal-container .modal:has(.vertical-tab-container) *::after {
-  border-color: #d8e1ec !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
-
-body .modal-container .modal:has(.vertical-tab-container) .setting-item,
-body .modal-container .modal:has(.vertical-tab-container) .setting-item-info,
-body .modal-container .modal:has(.vertical-tab-container) .setting-item-control {
-  background: transparent !important;
-}
-
-body .modal-container .modal.mod-settings .vertical-tab-content *,
-body .modal-container .modal:has(.vertical-tab-container) .vertical-tab-content * {
-  background-color: transparent !important;
+/* 우측 설정 본문 및 모든 내부 리스트/컨테이너를 순수 화이트로 강제 */
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .vertical-tab-content,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .vertical-tab-content *,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .vertical-tab-content,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .vertical-tab-content * {
   background-image: none !important;
 }
 
-body .modal-container .modal.mod-settings .vertical-tab-content,
-body .modal-container .modal.mod-settings .vertical-tab-content > *,
-body .modal-container .modal:has(.vertical-tab-container) .vertical-tab-content,
-body .modal-container .modal:has(.vertical-tab-container) .vertical-tab-content > * {
-  background: #f8fafc !important;
-}
-
-body .modal-container .modal.mod-settings .setting-item,
-body .modal-container .modal:has(.vertical-tab-container) .setting-item {
-  border-bottom: 1px solid #d8e1ec !important;
-  border-radius: 0 !important;
-}
-
-body .modal-container .modal.mod-settings input,
-body .modal-container .modal.mod-settings textarea,
-body .modal-container .modal.mod-settings select,
-body .modal-container .modal.mod-settings button,
-body .modal-container .modal.mod-settings .dropdown,
-body .modal-container .modal.mod-settings .search-input-container,
-body .modal-container .modal.mod-settings .search-input-container input,
-body .modal-container .modal.mod-settings .setting-hotkey,
-body .modal-container .modal.mod-settings .multi-select-pill,
-body .modal-container .modal:has(.vertical-tab-container) input,
-body .modal-container .modal:has(.vertical-tab-container) textarea,
-body .modal-container .modal:has(.vertical-tab-container) select,
-body .modal-container .modal:has(.vertical-tab-container) button,
-body .modal-container .modal:has(.vertical-tab-container) .dropdown,
-body .modal-container .modal:has(.vertical-tab-container) .search-input-container,
-body .modal-container .modal:has(.vertical-tab-container) .search-input-container input,
-body .modal-container .modal:has(.vertical-tab-container) .setting-hotkey,
-body .modal-container .modal:has(.vertical-tab-container) .multi-select-pill {
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .vertical-tab-content,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .vertical-tab-content > div,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .vertical-tab-content section,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .hotkey-search-container,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .hotkey-list-container,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-item,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .vertical-tab-content,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .vertical-tab-content > div,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .vertical-tab-content section,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .hotkey-search-container,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .hotkey-list-container,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .setting-item {
   background: #ffffff !important;
-  border: 1px solid #b8c6d8 !important;
-  border-radius: 6px !important;
-  color: #111827 !important;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
 }
 
-body .modal-container .modal.mod-settings button:hover,
-body .modal-container .modal.mod-settings .dropdown:hover,
-body .modal-container .modal.mod-settings select:hover,
-body .modal-container .modal:has(.vertical-tab-container) button:hover,
-body .modal-container .modal:has(.vertical-tab-container) .dropdown:hover,
-body .modal-container .modal:has(.vertical-tab-container) select:hover {
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-item-info,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-item-name,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-item-description,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-item-control,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-command-hotkeys,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-editor-extra-setting-button,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .setting-item-info,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .setting-item-name,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .setting-item-description,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .setting-item-control,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .setting-command-hotkeys,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .setting-editor-extra-setting-button {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* 상위 그룹 카드 (단축키 상단 바 및 설정 그룹 박스) */
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .vertical-tab-content > div,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .vertical-tab-content > section,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .vertical-tab-content > div,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .vertical-tab-content > section {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #d8e1ec !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  margin-bottom: 16px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* 단축키 및 일반 설정 항목 줄 */
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-item,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .setting-item {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-top: none !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-radius: 0 !important;
+  padding: 12px 0 !important;
+}
+
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-item:last-child,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .setting-item:last-child {
+  border-bottom: none !important;
+}
+
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-item-heading,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .setting-item-heading {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 16px 0 8px 0 !important;
+  font-size: 1.1em !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+}
+
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-item-name,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .setting-item-name {
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+  font-weight: 600 !important;
+}
+
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-item-description,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .setting-item-description {
+  color: #475569 !important;
+  -webkit-text-fill-color: #475569 !important;
+  font-size: 0.9em !important;
+}
+
+/* --------------------------------------------------------------------------
+   단축키 화면 상단 검색 & 필터 바 화이트 카드
+   -------------------------------------------------------------------------- */
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .hotkey-search-container,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-hotkey-search,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .hotkeys-filter-container,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .hotkey-filters,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-search-container,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .setting-item.mod-search-setting,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings [class*="search-container"],
+:is(.theme-dark, .theme-light, body) .modal.mod-settings [class*="hotkey-search"],
+:is(.theme-dark, .theme-light, body) .modal.mod-settings [class*="filter-container"],
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .vertical-tab-content > div:first-child,
+:is(.theme-dark, .theme-light, body) .modal.mod-settings .vertical-tab-content > div:first-of-type,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .hotkey-search-container,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .setting-hotkey-search,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .hotkeys-filter-container,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .setting-search-container,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) [class*="search-container"],
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) [class*="hotkey-search"],
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .vertical-tab-content > div:first-child,
+:is(.theme-dark, .theme-light, body) .modal:has(.vertical-tab-container) .vertical-tab-content > div:first-of-type {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #d8e1ec !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  margin-bottom: 16px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* 검색창 입력 박스 */
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .search-input-container {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
+}
+
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .search-input-container input {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  caret-color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+}
+
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .search-input-container input::placeholder {
+  color: #64748b !important;
+  -webkit-text-fill-color: #64748b !important;
+}
+
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .search-input-container .search-input-clear-button,
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .search-input-container .svg-icon {
+  color: #64748b !important;
+}
+
+/* --------------------------------------------------------------------------
+   단축키 필터 탭 버튼들 (전체, 할당됨, 내가 할당한 단축키들, 미할당됨)
+   -------------------------------------------------------------------------- */
+
+/* 필터 바 부모 래퍼 컨테이너 */
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .hotkeys-filter-container,
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .hotkey-filters,
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) [class*="quick-filter"],
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) [class*="filters"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* 1. 미선택 개별 필터 탭 (밝은 연회색 배경 + 연회색 테두리 + 차분한 텍스트) */
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .vertical-tab-content :is(button, .hotkey-filter, .pill, .multi-select-pill, .tab-item, .clickable-icon, .nav-action-button):not(.is-active):not(.mod-active):not(.is-selected):not(.is-checked):not([aria-selected="true"]):not([aria-pressed="true"]):not([data-active="true"]) {
+  background: #f1f5f9 !important;
+  background-color: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
+  color: #334155 !important;
+  -webkit-text-fill-color: #334155 !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+}
+
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .vertical-tab-content :is(button, .hotkey-filter, .pill, .multi-select-pill, .tab-item, .clickable-icon, .nav-action-button):not(.is-active):not(.mod-active):not(.is-selected):not(.is-checked):not([aria-selected="true"]):not([aria-pressed="true"]):not([data-active="true"]):hover {
+  background: #e2e8f0 !important;
+  background-color: #e2e8f0 !important;
+  border-color: #94a3b8 !important;
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+}
+
+/* 2. 현재 선택된 / 활성화된 개별 필터 탭 (솔리드 블루 배경 + 선명한 화이트 글씨) */
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .vertical-tab-content :is(
+  .is-active,
+  .mod-active,
+  .is-selected,
+  .is-checked,
+  .mod-cta,
+  [aria-selected="true"],
+  [aria-pressed="true"],
+  [data-active="true"]
+) {
+  background: #2f6fbb !important;
+  background-color: #2f6fbb !important;
+  background-image: none !important;
+  border: 1px solid #245c9f !important;
+  border-radius: 6px !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 2px rgba(47, 111, 187, 0.2) !important;
+}
+
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .vertical-tab-content :is(
+  .is-active,
+  .mod-active,
+  .is-selected,
+  .is-checked,
+  .mod-cta,
+  [aria-selected="true"],
+  [aria-pressed="true"],
+  [data-active="true"]
+) * {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* 단축키 뱃지 및 액션 버튼 */
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .setting-hotkey,
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .hotkey {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 5px !important;
+  color: #1e293b !important;
+  -webkit-text-fill-color: #1e293b !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .clickable-icon {
+  color: #475569 !important;
+}
+
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .clickable-icon:hover {
+  color: #0f172a !important;
+}
+
+/* 폼 컨트롤 (인풋, 텍스트에어리어, 셀렉트, 드롭다운, 버튼, 슬라이더, 토글) */
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) input:not([type="range"]),
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) textarea,
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) select,
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) button:not(.mod-cta):not(.is-active):not(.mod-active),
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .dropdown {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+}
+
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) select:hover,
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .dropdown:hover {
   border-color: #2f6fbb !important;
 }
 
-body .modal-container .modal.mod-settings button.mod-cta,
-body .modal-container .modal.mod-settings .mod-cta,
-body .modal-container .modal.mod-settings .checkbox-container.is-enabled,
-body .modal-container .modal:has(.vertical-tab-container) button.mod-cta,
-body .modal-container .modal:has(.vertical-tab-container) .mod-cta,
-body .modal-container .modal:has(.vertical-tab-container) .checkbox-container.is-enabled {
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) button.mod-cta,
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .mod-cta {
   background: #2f6fbb !important;
+  background-color: #2f6fbb !important;
   border-color: #245c9f !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .checkbox-container {
+  background: #cbd5e1 !important;
+  background-color: #cbd5e1 !important;
+}
+
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .checkbox-container.is-enabled {
+  background: #2f6fbb !important;
+  background-color: #2f6fbb !important;
+}
+
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .slider::-webkit-slider-runnable-track {
+  background: #cbd5e1 !important;
+  background-color: #cbd5e1 !important;
+}
+
+:is(.theme-dark, .theme-light, body) :is(.modal.mod-settings, .modal:has(.vertical-tab-container)) .slider::-webkit-slider-thumb {
+  background: #2f6fbb !important;
+  background-color: #2f6fbb !important;
+}
+
+/* 커뮤니티 플러그인 / 테마 탐색 모달 화이트 테마 */
+:is(.theme-dark, .theme-light, body) .modal.mod-community-plugin,
+:is(.theme-dark, .theme-light, body) .modal.mod-community-theme,
+:is(.theme-dark, .theme-light, body) .community-modal-container,
+:is(.theme-dark, .theme-light, body) .community-modal-sidebar,
+:is(.theme-dark, .theme-light, body) .community-modal-readme,
+:is(.theme-dark, .theme-light, body) .community-item {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  border-color: #d8e1ec !important;
+}
+
+:is(.theme-dark, .theme-light, body) .community-item:hover {
+  background: #f1f5f9 !important;
+  background-color: #f1f5f9 !important;
+}
+
+:is(.theme-dark, .theme-light, body) .community-item .community-item-name {
+  color: #0f172a !important;
+}
+
+:is(.theme-dark, .theme-light, body) .community-item .community-item-author,
+:is(.theme-dark, .theme-light, body) .community-item .community-item-downloads {
+  color: #64748b !important;
 }
 
 /* Top chrome override */

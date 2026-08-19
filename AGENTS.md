@@ -34,6 +34,7 @@ Prefer CSS overrides in `mystyle.css` instead of editing `.obsidian/themes/Thing
 - Preserve both light and dark mode behavior unless the user asks for one mode only.
 - Do not remove `mystyle` from `.obsidian/appearance.json`.
 - Do not rename the `Things` theme folder or the `mystyle.css` snippet file unless explicitly requested.
+- **기존 기능 및 스타일 회귀(Regression) 방지**: 새로운 수정사항을 적용할 때 기존에 구현된 기능, 키보드 네비게이션(커서 이동), 줄바꿈/여백, 설정창 화이트 테마 등 이미 정상 작동하는 요소들이 깨지거나 부작용이 발생하지 않도록 영향 범위를 신중히 검토하고 정밀하게 스코프를 제한하여 수정해야 한다.
 
 ## Useful Reference Points
 
