@@ -73,20 +73,16 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   코드 블록 상하 1rem 여백 고정 (편집 모드 & 읽기 모드 1:1 동기화)
+   코드 블록 스타일 & 읽기 모드 여백
    -------------------------------------------------------------------------- */
 
-/* 1. 편집 모드 (Live Preview / Source View) - 커서 점프 없는 안전한 외부 여백 1rem */
-.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock.HyperMD-codeblock-begin {
-  margin-top: 0 !important;
-  border-top: 1rem solid transparent !important;
-  background-clip: padding-box !important;
-}
-
-.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock.HyperMD-codeblock-end {
-  margin-bottom: 0 !important;
-  border-bottom: 1rem solid transparent !important;
-  background-clip: padding-box !important;
+/* 1. 편집 모드: CodeMirror 줄 좌표계 100% 순정 유지 (방향키 커서 점프 완벽 방지) */
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock {
+  margin: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border-top: none !important;
+  border-bottom: none !important;
 }
 
 .markdown-source-view.mod-cm6 .cm-embed-block:has(.block-language-),
@@ -95,7 +91,7 @@ body {
   margin-bottom: 1rem !important;
 }
 
-/* 2. 읽기 모드 (Reading View) */
+/* 2. 읽기 모드 (Reading View) 코드 블록 상하 1rem 여백 */
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered pre,
 .workspace-leaf-content[data-type="markdown"] .markdown-preview-view pre,
 .markdown-rendered pre {
@@ -110,10 +106,8 @@ body {
   line-height: 1.3;
 }
 
-/* 3. Body line spacing (본문 줄간격 통일) */
-.workspace-leaf-content[data-type="markdown"]
-  .markdown-source-view.mod-cm6
-  .cm-line:not(.HyperMD-header):not(.HyperMD-codeblock),
+/* 3. Body line spacing (본문 및 모든 cm-line 줄간격 완전 통일) */
+.workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .cm-line,
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered p,
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered li,
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered div:not(.math):not(.mermaid) {
@@ -175,16 +169,10 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   H2 태그 밑줄 아래 마진 1rem 설정 (편집 모드 & 읽기 모드 1:1 동기화)
+   H2 태그 밑줄 아래 마진 (읽기 모드 전용)
    -------------------------------------------------------------------------- */
 
-/* 편집 모드 (Live Preview / Source View) */
-.markdown-source-view.mod-cm6 .cm-line.HyperMD-header-2,
-.markdown-source-view.mod-cm6 .cm-line[class*="HyperMD-header-2"] {
-  margin-bottom: 1rem !important;
-}
-
-/* 읽기 모드 (Reading View) */
+/* 읽기 모드 (Reading View) H2 하단 마진 1rem */
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered h2,
 .markdown-rendered h2,
 .markdown-preview-view h2 {
