@@ -40,7 +40,7 @@ Prefer CSS overrides in `mystyle.css` instead of editing `.obsidian/themes/Thing
 - Keep overrides scoped and readable. Group related rules with short comments.
 - Prefer overriding Things/Obsidian CSS variables when possible before using highly specific selectors.
 - Avoid broad `!important` usage. Use it only when Obsidian or the theme requires it and a normal cascade override does not work.
-  - Known exception: the settings-modal white theme block (`.modal.mod-settings`, roughly lines 1170-1570 of `mystyle.css`) relies on `!important` throughout, because Obsidian applies competing inline and high-specificity styles there. That block accounts for most of the file's `!important` declarations; treat it as an established exception rather than a precedent for new rules elsewhere.
+  - Known exception: the settings-modal white theme block (the `.modal.mod-settings` / `.modal:has(.vertical-tab-container)` rules in `mystyle.css`) relies on `!important` throughout, because Obsidian applies competing inline and high-specificity styles there. That block accounts for most of the file's `!important` declarations; treat it as an established exception rather than a precedent for new rules elsewhere.
 - Preserve both light and dark mode behavior unless the user asks for one mode only.
   - When pinning a **foreground** color (text, caret, icon), pin the matching **background** in the same rule, or scope the rule with `.theme-dark` / `.theme-light`. Things derives form-field and surface colors from `--color-base-*`, which invert between modes (e.g. `--color-base-25` is `#2c313c` dark / `#f0f0f0` light), so a lone `color: #ffffff` silently becomes white-on-white after a mode switch.
 - Do not remove `mystyle` from `.obsidian/appearance.json`.

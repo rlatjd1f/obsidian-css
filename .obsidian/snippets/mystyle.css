@@ -298,6 +298,15 @@ body,
 }
 
 /* Headings */
+
+/* 모드에 반응해야 하는 변수만 .theme-* 에 둔다.
+   헤딩·테이블 색은 팝오버/호버 프리뷰처럼 Things 기본 배경을 쓰는 표면에서 렌더링되므로
+   모드에 따라 바뀌어야 맞다. (마크다운 리프 안에서는 .workspace-leaf-content[data-type="markdown"] 블록이 다크값으로 재고정)
+
+   반대로 사이드바·크롬은 body 에서 밝은색으로 '고정'되어 모드를 따르지 않는다.
+   따라서 그 위에 올라가는 폴더/네비 색을 .theme-* 에 두면 다크 모드에서
+   밝은 배경 위에 밝은 글씨가 되어 대비가 무너진다 (측정값 2.96~3.75:1).
+   해당 변수들은 body 블록에 고정값으로 둔다. */
 .theme-light {
   --custom-h1-color: #b42318;
   --custom-h2-color: #9a5b00;
@@ -305,18 +314,6 @@ body,
   --custom-h4-color: #0f6cbd;
   --custom-h5-color: #6b4bb8;
   --custom-h6-color: #7a3e65;
-  --custom-nav-active-bg: rgba(15, 108, 189, 0.14);
-  --custom-nav-active-border: #0f6cbd;
-  --custom-folder-level-1: #083d70;
-  --custom-folder-level-2: #0b5730;
-  --custom-folder-level-3: #6f3700;
-  --custom-folder-level-4: #482781;
-  --custom-folder-level-5: #661f3b;
-  --custom-folder-bg-1: rgba(15, 108, 189, 0.055);
-  --custom-folder-bg-2: rgba(31, 122, 77, 0.055);
-  --custom-folder-bg-3: rgba(154, 91, 0, 0.055);
-  --custom-folder-bg-4: rgba(107, 75, 184, 0.055);
-  --custom-folder-bg-5: rgba(122, 62, 101, 0.055);
   --custom-table-header-bg: #e9eef6;
   --custom-table-header-border: #9caec5;
   --custom-table-row-alt-bg: rgba(30, 64, 112, 0.035);
@@ -330,18 +327,6 @@ body,
   --custom-h4-color: #79b8ff;
   --custom-h5-color: #c4a7ff;
   --custom-h6-color: #f0a6ca;
-  --custom-nav-active-bg: rgba(47, 111, 187, 0.24);
-  --custom-nav-active-border: #1d5fa7;
-  --custom-folder-level-1: #4185be;
-  --custom-folder-level-2: #449669;
-  --custom-folder-level-3: #b27a26;
-  --custom-folder-level-4: #8b6bc3;
-  --custom-folder-level-5: #ae5b7e;
-  --custom-folder-bg-1: rgba(121, 184, 255, 0.08);
-  --custom-folder-bg-2: rgba(104, 211, 145, 0.07);
-  --custom-folder-bg-3: rgba(242, 198, 109, 0.07);
-  --custom-folder-bg-4: rgba(196, 167, 255, 0.07);
-  --custom-folder-bg-5: rgba(240, 166, 202, 0.07);
   --custom-table-header-bg: #2f3745;
   --custom-table-header-border: #5f6f87;
   --custom-table-row-alt-bg: rgba(255, 255, 255, 0.035);
@@ -387,11 +372,18 @@ body {
   --custom-tab-active-text: #17345c;
   --custom-tab-inactive-bg: #c4cedb;
   --custom-tab-inactive-text: #2f4055;
+  /* 사이드바 폴더/네비 색: 사이드바 배경이 모드와 무관하게 밝으므로 여기서 고정한다.
+     .theme-light/.theme-dark 로 옮기면 클래스가 body 를 이겨 다크 모드에서 대비가 깨진다. */
   --custom-folder-level-1: #083d70;
   --custom-folder-level-2: #0b5730;
   --custom-folder-level-3: #6f3700;
   --custom-folder-level-4: #482781;
   --custom-folder-level-5: #661f3b;
+  --custom-folder-bg-1: rgba(15, 108, 189, 0.055);
+  --custom-folder-bg-2: rgba(31, 122, 77, 0.055);
+  --custom-folder-bg-3: rgba(154, 91, 0, 0.055);
+  --custom-folder-bg-4: rgba(107, 75, 184, 0.055);
+  --custom-folder-bg-5: rgba(122, 62, 101, 0.055);
   --h1-color: var(--custom-h1-color);
   --h2-color: var(--custom-h2-color);
   --h3-color: var(--custom-h3-color);
