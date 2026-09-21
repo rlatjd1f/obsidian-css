@@ -379,11 +379,17 @@ body {
   --custom-folder-level-3: #6f3700;
   --custom-folder-level-4: #482781;
   --custom-folder-level-5: #661f3b;
-  --custom-folder-bg-1: rgba(15, 108, 189, 0.055);
-  --custom-folder-bg-2: rgba(31, 122, 77, 0.055);
-  --custom-folder-bg-3: rgba(154, 91, 0, 0.055);
-  --custom-folder-bg-4: rgba(107, 75, 184, 0.055);
-  --custom-folder-bg-5: rgba(122, 62, 101, 0.055);
+  /* 틴트는 '폴더 제목 줄'에만 쓴다. 자식 컨테이너에는 깔지 않으므로
+     머리 줄이 스스로 읽히도록 0.055 에서 0.10 으로 올린다 (대비 6.44~8.40:1 유지). */
+  --custom-folder-bg-1: rgba(15, 108, 189, 0.1);
+  --custom-folder-bg-2: rgba(31, 122, 77, 0.1);
+  --custom-folder-bg-3: rgba(154, 91, 0, 0.1);
+  --custom-folder-bg-4: rgba(107, 75, 184, 0.1);
+  --custom-folder-bg-5: rgba(122, 62, 101, 0.1);
+  /* 계층은 색이 아니라 들여쓰기가 진다. 두 값은 한 쌍으로 움직인다:
+     file-inset = indent + 폴더 행의 접기 화살표 열(약 10px). */
+  --custom-nav-indent: 16px;
+  --custom-nav-file-inset: 26px;
   --h1-color: var(--custom-h1-color);
   --h2-color: var(--custom-h2-color);
   --h3-color: var(--custom-h3-color);
@@ -785,7 +791,13 @@ body {
 }
 
 .nav-folder-children > .nav-folder {
-  margin-left: 8px;
+  margin-left: var(--custom-nav-indent);
+}
+
+/* 폴더 행에는 접기 화살표 열이 있고 파일 행에는 없어서, 형제 파일이 형제 폴더보다
+   왼쪽에 놓여 계층이 뒤집혀 보였다. 화살표 열만큼 밀어 이름 기준선을 맞춘다. */
+.nav-folder-children > .nav-file > .nav-file-title {
+  padding-left: var(--custom-nav-file-inset);
 }
 
 .nav-files-container > div > .nav-folder {
@@ -804,7 +816,6 @@ body {
 .nav-folder-children > .nav-folder > .nav-folder-title {
   background-color: var(--custom-folder-bg-2);
   color: var(--custom-folder-level-2);
-  font-size: 1.09em;
 }
 
 .nav-folder-children
@@ -813,7 +824,6 @@ body {
   > .nav-folder-title {
   background-color: var(--custom-folder-bg-3);
   color: var(--custom-folder-level-3);
-  font-size: 1.06em;
 }
 
 .nav-folder-children
@@ -823,7 +833,6 @@ body {
   > .nav-folder-title {
   background-color: var(--custom-folder-bg-4);
   color: var(--custom-folder-level-4);
-  font-size: 1.03em;
 }
 
 .nav-folder-children
@@ -834,30 +843,34 @@ body {
   > .nav-folder-title {
   background-color: var(--custom-folder-bg-5);
   color: var(--custom-folder-level-5);
-  font-size: 1em;
 }
 
+/* 최상위 카드만 둥글게 두고 안쪽은 세로 가이드선만 남긴다.
+   단계마다 radius 를 겹치면 테두리 노이즈가 계층 신호를 덮는다. */
 .nav-folder-children {
-  border-radius: 6px;
   margin-left: 0;
 }
 
+/* 자식 컨테이너는 배경 없이 세로 가이드선만 남긴다.
+   제목 줄과 내용 영역이 같은 틴트를 쓰면 '이 줄이 폴더 머리'라는 신호가 사라진다.
+   최상위 3px 실선이 가장 강하고 안쪽으로 갈수록 약해지도록 알파를 낮춘다.
+   65% 는 2~5단계가 모두 3:1 을 넘기는 최소값(3.33~3.99:1)이다.
+   1단계 실선(9.33:1)과는 충분히 벌어져 위계가 유지된다. */
 .nav-files-container > div > .nav-folder > .nav-folder-children {
-  background-color: var(--custom-folder-bg-1);
   border-left: 3px solid var(--custom-folder-level-1);
 }
 
 .nav-folder-children > .nav-folder > .nav-folder-children {
-  background-color: var(--custom-folder-bg-2);
-  border-left: 2px solid var(--custom-folder-level-2);
+  border-left: 2px solid
+    color-mix(in srgb, var(--custom-folder-level-2) 65%, transparent);
 }
 
 .nav-folder-children
   .nav-folder-children
   > .nav-folder
   > .nav-folder-children {
-  background-color: var(--custom-folder-bg-3);
-  border-left: 2px solid var(--custom-folder-level-3);
+  border-left: 2px solid
+    color-mix(in srgb, var(--custom-folder-level-3) 65%, transparent);
 }
 
 .nav-folder-children
@@ -865,8 +878,8 @@ body {
   .nav-folder-children
   > .nav-folder
   > .nav-folder-children {
-  background-color: var(--custom-folder-bg-4);
-  border-left: 2px solid var(--custom-folder-level-4);
+  border-left: 2px solid
+    color-mix(in srgb, var(--custom-folder-level-4) 65%, transparent);
 }
 
 .nav-folder-children
@@ -875,8 +888,8 @@ body {
   .nav-folder-children
   > .nav-folder
   > .nav-folder-children {
-  background-color: var(--custom-folder-bg-5);
-  border-left: 2px solid var(--custom-folder-level-5);
+  border-left: 2px solid
+    color-mix(in srgb, var(--custom-folder-level-5) 65%, transparent);
 }
 
 /* Retro file tree */
@@ -923,7 +936,7 @@ body.file-tree-retro .nav-files-container > div > .nav-folder > .nav-folder-titl
    기존에는 네 단계가 rgba(23, 33, 48, 0.12) 을 공유했는데 합성하면 1.27:1 이라
    점선이 사실상 보이지 않았다. 1단계가 --custom-folder-level-1 을 쓰는 것과 맞춰
    각 단계 색에서 파생시킨다. 색값을 복제하지 않도록 color-mix 로 알파만 입힌다.
-   알파 65%% 는 네 단계 모두 3:1 을 넘기는 최소값이다 (3.18~3.85:1).
+   알파 65% 는 네 단계 모두 3:1 을 넘기는 최소값이다 (3.18~3.85:1).
    1단계의 2px 실선(9.47:1)보다 확실히 약하게 두어 위계를 유지한다.
    (color-mix 는 Obsidian 1.11 대의 Chromium 에서 지원) */
 body.file-tree-retro .nav-folder-children > .nav-folder > .nav-folder-title {
