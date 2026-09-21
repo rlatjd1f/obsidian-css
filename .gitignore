@@ -20,3 +20,15 @@
 !.obsidian/plugins/obsidian-style-settings/styles.css
 !.obsidian/snippets/
 !.obsidian/snippets/mystyle.css
+
+# Keep the base theme the snippet is written against, so a fresh clone is reproducible.
+# Things v2.2.4 - https://github.com/colineckert/obsidian-things
+#   manifest author: @colineckert
+#   LICENSE: MIT, Copyright (c) 2020-2021 Stephan Ango (@kepano)
+# The upstream LICENSE is vendored alongside the theme as required by MIT.
+# Prism is installed locally but unused, so it stays untracked.
+!.obsidian/themes/
+!.obsidian/themes/Things/
+!.obsidian/themes/Things/LICENSE
+!.obsidian/themes/Things/manifest.json
+!.obsidian/themes/Things/theme.css
