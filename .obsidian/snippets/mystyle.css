@@ -372,6 +372,10 @@ body {
   --custom-markdown-text: #e1e8f0;
   --custom-markdown-muted: #b1bfce;
   --custom-markdown-faint: #8797aa;
+  --custom-search-input-bg: #2c313c;
+  --custom-search-input-text: #ffffff;
+  --custom-search-input-placeholder: rgba(255, 255, 255, 0.55);
+  --custom-search-input-icon: rgba(255, 255, 255, 0.65);
   --custom-inline-code-bg: #34445a;
   --custom-inline-code-border: #516783;
   --custom-inline-code-text: #d7f3ff;
@@ -744,6 +748,42 @@ body {
 .workspace-leaf-content[data-type="search"] .tree-item-flair {
   color: var(--text-muted);
   opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   사이드바 검색 뷰 및 검색 입력창
+
+   Things 테마의 입력창 배경(--background-modifier-form-field → --color-base-25)은
+   다크 #2c313c / 라이트 #f0f0f0 으로 모드에 따라 반전된다.
+   글자색만 흰색으로 고정하면 라이트 모드에서 흰 글씨가 밝은 배경에 묻혀 사라지므로,
+   입력창 배경까지 함께 고정해 두 모드 모두에서 대비를 보장한다.
+   배경 고정값(#2c313c)은 다크 모드에서 Things가 적용하던 값과 동일하므로
+   현재 화면은 그대로 유지되고, 라이트 모드 전환 시에만 동작이 달라진다.
+   -------------------------------------------------------------------------- */
+
+.workspace-leaf-content[data-type="search"] .search-input-container input,
+.workspace-leaf-content[data-type="search"] input:is([type="text"], [type="search"], :not([type])),
+.workspace-split.mod-left-split .search-input-container input,
+.workspace-split.mod-right-split .search-input-container input {
+  background-color: var(--custom-search-input-bg) !important;
+  color: var(--custom-search-input-text) !important;
+  -webkit-text-fill-color: var(--custom-search-input-text) !important;
+  caret-color: var(--custom-search-input-text) !important;
+}
+
+.workspace-leaf-content[data-type="search"] .search-input-container input::placeholder,
+.workspace-leaf-content[data-type="search"] input:is([type="text"], [type="search"], :not([type]))::placeholder,
+.workspace-split.mod-left-split .search-input-container input::placeholder,
+.workspace-split.mod-right-split .search-input-container input::placeholder {
+  color: var(--custom-search-input-placeholder) !important;
+  -webkit-text-fill-color: var(--custom-search-input-placeholder) !important;
+}
+
+.workspace-leaf-content[data-type="search"] .search-input-container .search-input-clear-button,
+.workspace-leaf-content[data-type="search"] .search-input-container .svg-icon,
+.workspace-split.mod-left-split .search-input-container .svg-icon,
+.workspace-split.mod-right-split .search-input-container .svg-icon {
+  color: var(--custom-search-input-icon) !important;
 }
 
 .nav-folder-title {
