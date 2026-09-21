@@ -896,7 +896,9 @@ body.file-tree-retro .nav-folder-title {
 
 body.file-tree-retro .nav-files-container > div > .nav-folder {
   background-color: #e5edf4;
-  border: 1px solid #7f95ad;
+  /* 카드 배경(#e5edf4)과 패널 배경의 대비가 1.12:1 이라 경계를 이 테두리가 혼자 진다.
+     #7f95ad 는 2.32:1 로 비텍스트 기준(3:1) 미달이라 한 단계 어둡게 잡는다. */
+  border: 1px solid #5d7794;
   border-radius: 0;
   box-shadow: 2px 2px 0 rgba(23, 33, 48, 0.18);
   margin: 6px 2px 8px;
@@ -917,23 +919,56 @@ body.file-tree-retro .nav-files-container > div > .nav-folder > .nav-folder-titl
   border-bottom: 2px solid var(--custom-folder-level-1);
 }
 
-body.file-tree-retro .nav-folder-children > .nav-folder > .nav-folder-title,
+/* 2~5단계 폴더 밑줄.
+   기존에는 네 단계가 rgba(23, 33, 48, 0.12) 을 공유했는데 합성하면 1.27:1 이라
+   점선이 사실상 보이지 않았다. 1단계가 --custom-folder-level-1 을 쓰는 것과 맞춰
+   각 단계 색에서 파생시킨다. 색값을 복제하지 않도록 color-mix 로 알파만 입힌다.
+   알파 65%% 는 네 단계 모두 3:1 을 넘기는 최소값이다 (3.18~3.85:1).
+   1단계의 2px 실선(9.47:1)보다 확실히 약하게 두어 위계를 유지한다.
+   (color-mix 는 Obsidian 1.11 대의 Chromium 에서 지원) */
+body.file-tree-retro .nav-folder-children > .nav-folder > .nav-folder-title {
+  border-bottom-color: color-mix(
+    in srgb,
+    var(--custom-folder-level-2) 65%,
+    transparent
+  );
+  border-bottom-style: dashed;
+}
+
 body.file-tree-retro .nav-folder-children
   .nav-folder-children
   > .nav-folder
-  > .nav-folder-title,
+  > .nav-folder-title {
+  border-bottom-color: color-mix(
+    in srgb,
+    var(--custom-folder-level-3) 65%,
+    transparent
+  );
+}
+
 body.file-tree-retro .nav-folder-children
   .nav-folder-children
   .nav-folder-children
   > .nav-folder
-  > .nav-folder-title,
+  > .nav-folder-title {
+  border-bottom-color: color-mix(
+    in srgb,
+    var(--custom-folder-level-4) 65%,
+    transparent
+  );
+}
+
 body.file-tree-retro .nav-folder-children
   .nav-folder-children
   .nav-folder-children
   .nav-folder-children
   > .nav-folder
   > .nav-folder-title {
-  border-bottom-style: dashed;
+  border-bottom-color: color-mix(
+    in srgb,
+    var(--custom-folder-level-5) 65%,
+    transparent
+  );
 }
 
 body.file-tree-retro .nav-file-title {
@@ -944,7 +979,7 @@ body.file-tree-retro .nav-file-title {
 
 body.file-tree-retro .nav-file-title:hover {
   background-color: rgba(255, 255, 255, 0.45);
-  box-shadow: inset 2px 0 0 #8b6bc3;
+  box-shadow: inset 2px 0 0 #1d5fa7;
 }
 
 body.file-tree-retro .nav-file-title.is-active,
