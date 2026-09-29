@@ -48,6 +48,9 @@ body {
   --heading-spacing: calc(var(--p-spacing) * 2);
   --heading-line-height: 1.3;
   --list-spacing: 0.22rem;
+  /* Things 기본 H5 1rem(본문과 같음), H6 0.9rem(본문보다 작음)은 굵은 글씨와 구분되지 않았다. */
+  --h5-size: 1.05rem;
+  --h6-size: 1rem;
 }
 
 /* 1. Editor width & Reading view width sync (가로 너비 및 좌우 패딩 1:1 완벽 일치) */
@@ -110,7 +113,13 @@ body {
   margin-bottom: 1rem !important;
 }
 
-/* 2. Document title (문서 제목 위치 및 스타일 통일) */
+/* 2. Document title (문서 제목 위치 및 스타일 통일)
+   Obsidian 은 문서 제목에 H1 의 크기·굵기·색을 그대로 쓴다. 본문 첫 줄이 H1 이면 같은 모양의
+   빨간 제목이 두 번 연달아 보였으므로, 크기는 두고 색만 본문색 계열로 바꾼다. */
+.workspace-leaf-content[data-type="markdown"] {
+  --inline-title-color: var(--custom-markdown-text);
+}
+
 .workspace-leaf-content[data-type="markdown"] .inline-title {
   text-align: center;
   margin-bottom: 1.5rem;
@@ -165,6 +174,20 @@ body {
 .workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .cm-line.HyperMD-header,
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
   line-height: var(--heading-line-height);
+}
+
+/* H1 밑줄. Things 가 H2 에만 밑줄을 줘서 더 큰 H1 보다 H2 가 구조적으로 강해 보였다.
+   Things 의 H2 규칙과 같은 모양을 두 모드에 준다. */
+.markdown-rendered h1,
+.markdown-preview-view h1 {
+  border-bottom: 2px solid var(--background-modifier-border);
+  width: 100%;
+  padding-bottom: 2px;
+}
+
+.HyperMD-header.HyperMD-header-1.cm-line {
+  border-bottom: 2px solid var(--background-modifier-border);
+  padding-bottom: 2px;
 }
 
 /* 편집 모드 헤딩 폰트 크기 보장 (H1~H6 개별 크기 적용) */
@@ -223,10 +246,14 @@ body,
   --list-spacing: 0px !important;
 }
 
-/* 최상위 리스트 시작 위치: 숫자 마커 '1.'이 본문 시작 라인(X=0)에 정확히 일치 */
+/* 최상위 리스트 시작 위치.
+   Obsidian 기본값이 li 에 margin-inline-start: 3ch 를 주는데 예전에는 여기에 목록 padding
+   0.95em 을 더해, 글자가 본문 시작선에서 45.4px 까지 밀렸다(편집 모드는 약 24px).
+   목록 padding 은 0 으로 두고 li margin 한 곳에서만 위치를 정한다. 값은 편집 모드
+   스크린샷에서 역산했다: 글머리표 목록 글자 24px, 번호 목록은 번호 폭 때문에 32px. */
 .markdown-rendered ol,
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered ol {
-  padding-inline-start: 0.95em !important;
+  padding-inline-start: 0 !important;
   margin-block-start: var(--p-spacing) !important;
   margin-block-end: var(--p-spacing) !important;
   margin-left: 0 !important;
@@ -234,13 +261,17 @@ body,
 
 .markdown-rendered ul,
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered ul {
-  padding-inline-start: 0.95em !important;
+  padding-inline-start: 0 !important;
   margin-block-start: var(--p-spacing) !important;
   margin-block-end: var(--p-spacing) !important;
   margin-left: 0 !important;
 }
 
-/* 중첩(하위) 리스트 들여쓰기 폭: 편집 모드의 2칸 스페이스/탭 위치에 정확히 일치 */
+/* 중첩(하위) 리스트.
+   예전에는 하위 목록 padding 0.85em 에 Obsidian 이 --list-indent(0.85em)로 주는 하위 li margin 이
+   더해져 단계당 27.2px 씩 밀렸다. 편집 모드 탭 한 칸(--list-indent = 13.6px)에 맞춰
+   하위 목록 padding 은 0 으로 두고 li margin 만 남긴다. 결과적으로 하위 글머리표가
+   부모 항목 글자 시작선 아래에 온다. */
 .markdown-rendered li > ol,
 .markdown-rendered li > ul,
 .markdown-rendered ul ul,
@@ -249,10 +280,24 @@ body,
 .markdown-rendered ol ul,
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered li > ol,
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered li > ul {
-  padding-inline-start: 0.85em !important;
+  padding-inline-start: 0 !important;
   margin-block-start: 0 !important;
   margin-block-end: 0 !important;
   margin-left: 0 !important;
+}
+
+/* li 위치: 최상위는 편집 모드 위치, 하위는 --list-indent 한 칸.
+   하위 규칙은 :is(ul, ol) 를 한 번 더 겹쳐 최상위 규칙보다 특이도가 높다. */
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered ul > li {
+  margin-inline-start: 1.5em;
+}
+
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered ol > li {
+  margin-inline-start: 2em;
+}
+
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered :is(ul, ol) :is(ul, ol) > li {
+  margin-inline-start: var(--list-indent);
 }
 
 /* 리스트 항목 간격: 편집 모드와 동일하게 컴팩트한 줄간격 유지 */
