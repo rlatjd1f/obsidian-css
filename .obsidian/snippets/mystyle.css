@@ -34,12 +34,18 @@ body {
   --line-height: 1.7;
   --line-height-normal: 1.7;
   --font-text-size: 16px;
-  /* 읽기 모드의 문단·헤딩 간격을 편집 모드의 '빈 줄 한 칸'(글자 크기 × 줄높이 = 27.2px)에
-     맞춘다. 예전 1rem(16px)은 모드 전환 때마다 본문이 위아래로 출렁이는 원인이었다. */
-  --p-spacing: calc(var(--font-text-size) * var(--line-height));
-  /* Obsidian 의 --heading-spacing 은 '헤딩 위쪽 간격' 단일 길이다.
-     예전 값 "1.4rem 0 0.5rem" 은 단축 표기라 무효 처리되어 계산값이 0px 였다. */
-  --heading-spacing: var(--p-spacing);
+  /* 여백 체계 (두 모드 공통)
+     - 블록 사이(문단·목록·표·인용구·코드): --p-spacing = 16px
+     - 헤딩 위: --heading-spacing = 32px, 헤딩 아래: 16px
+     헤딩 위를 아래의 두 배로 두어 헤딩이 '아래 내용의 제목'으로 묶여 읽히게 한다.
+     예전에는 모든 간격을 27.2px 하나로 통일해 헤딩이 위아래 한가운데 떠 있었다.
+     편집 모드는 빈 줄 높이를 --p-spacing 으로 줄여 같은 간격을 만든다(아래 '빈 줄' 규칙).
+     Obsidian 은 편집기 헤딩 줄에 padding-top: var(--p-spacing) 를 스스로 주므로
+     빈 줄 16 + 헤딩 padding 16 = 32 로 읽기 모드와 맞는다.
+     (--heading-spacing 은 Obsidian 에서 '헤딩 위쪽 간격' 단일 길이다. 단축 표기를 넣으면
+     무효 처리되어 0px 가 된다.) */
+  --p-spacing: 1rem;
+  --heading-spacing: calc(var(--p-spacing) * 2);
   --heading-line-height: 1.3;
   --list-spacing: 0.22rem;
 }
@@ -119,6 +125,16 @@ body {
   line-height: var(--line-height);
 }
 
+/* 편집 모드 빈 줄 높이 = --p-spacing.
+   빈 줄은 글자 줄(글자 크기 × 1.7 = 27.2px)과 같은 높이라 읽기 모드 블록 간격(16px)보다
+   컸다. 빈 줄만 --p-spacing 높이로 줄여 두 모드의 간격을 맞춘다.
+   margin 이 아니라 line-height 로 줄이므로 CodeMirror 가 높이를 그대로 측정한다
+   (Obsidian 도 같은 :has(>br:only-child) 판별을 쓴다).
+   코드블록·목록·인용구 안의 빈 줄은 제외한다. */
+.workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .cm-line:not(.HyperMD-codeblock):not(.HyperMD-list-line):not(.HyperMD-quote):has(> br:only-child) {
+  line-height: var(--p-spacing);
+}
+
 /* 단락 여백 통일 (Reading view 단락 간격과 편집 모드 빈 줄/단락 흐름 일치) */
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered p {
   margin-block-start: var(--p-spacing);
@@ -186,12 +202,14 @@ body {
    H2 태그 밑줄 아래 마진 (읽기 모드 전용)
    -------------------------------------------------------------------------- */
 
-/* 읽기 모드 (Reading View) H2 하단 마진 1rem */
-.workspace-leaf-content[data-type="markdown"] .markdown-rendered h2,
+/* 읽기 모드 헤딩 하단 여백.
+   다음 블록의 위 여백(--p-spacing)과 겹쳐 결과적으로 헤딩 아래는 16px 이 된다.
+   (Things 가 h2 에 margin-bottom: 8px !important 를 주므로 !important 로 맞선다) */
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered :is(h1, h2, h3, h4, h5, h6),
 .markdown-rendered h2,
 .markdown-preview-view h2 {
-  margin-bottom: 1rem !important;
-  margin-block-end: 1rem !important;
+  margin-bottom: 0.5rem !important;
+  margin-block-end: 0.5rem !important;
 }
 
 /* 4. List markers, indent & spacing sync (리스트 시작 위치, 들여쓰기 폭, 줄간격을 편집 모드와 1:1 일치) */
@@ -209,16 +227,16 @@ body,
 .markdown-rendered ol,
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered ol {
   padding-inline-start: 0.95em !important;
-  margin-block-start: 0.15rem !important;
-  margin-block-end: 0.15rem !important;
+  margin-block-start: var(--p-spacing) !important;
+  margin-block-end: var(--p-spacing) !important;
   margin-left: 0 !important;
 }
 
 .markdown-rendered ul,
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered ul {
   padding-inline-start: 0.95em !important;
-  margin-block-start: 0.15rem !important;
-  margin-block-end: 0.15rem !important;
+  margin-block-start: var(--p-spacing) !important;
+  margin-block-end: var(--p-spacing) !important;
   margin-left: 0 !important;
 }
 
@@ -297,7 +315,9 @@ body,
 .workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .HyperMD-quote {
   border-left: 3px solid #3eb4bf;
   padding-inline: 0.9rem;
-  font-style: italic;
+  /* 한글 글꼴에는 진짜 이탤릭이 없어 기울임은 억지로 눕힌 글자(faux oblique)가 되어
+     가독성이 떨어진다. 인용구는 색과 왼쪽 선으로만 구분한다. */
+  font-style: normal;
   line-height: var(--line-height);
 }
 
@@ -306,14 +326,14 @@ body,
    주면 여러 줄 인용구가 줄마다 벌어지고 CodeMirror 줄 좌표가 어긋난다
    (9ec7875 에서 코드블록 커서 점프를 고친 것과 같은 원인). */
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered blockquote {
-  margin-block: 0.8rem;
+  margin-block: var(--p-spacing);
   padding-block: 0.35rem;
 }
 
 /* 인용구 안 첫/마지막 문단의 바깥쪽 문단 여백 제거.
    blockquote 에 padding 이 있으면 안쪽 p 의 margin 이 바깥으로 겹쳐 사라지지 않고
-   테두리 안에 쌓여, 세로줄이 글자보다 위아래로 32.8px 씩 길게 뻗었다.
-   여러 문단 인용구의 문단 사이 간격(27.2px)은 그대로 둔다. */
+   테두리 안에 쌓여, 세로줄이 글자보다 위아래로 길게 뻗었다.
+   여러 문단 인용구의 문단 사이 간격(--p-spacing)은 그대로 둔다. */
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered blockquote > :first-child {
   margin-block-start: 0;
 }
@@ -1126,12 +1146,24 @@ body.file-tree-f1 .nav-file-title.is-active::before {
   font-weight: 700;
 }
 
+/* 셀 안쪽 여백. 읽기 모드는 td/th 에 주고, 편집 모드는 Obsidian 이 td/th 의 padding 을 0 으로
+   두고 안쪽 .table-cell-wrapper 에 여백을 주므로 wrapper 쪽을 같은 값으로 덮는다.
+   예전에는 편집 모드 td 에도 padding 을 줘서 wrapper 여백과 이중으로 쌓였다. */
 .markdown-rendered table th,
 .markdown-rendered table td,
+.markdown-source-view.mod-cm6 .cm-table-widget .table-cell-wrapper {
+  line-height: 1.5;
+  padding: 0.4em 0.75em;
+}
+
 .markdown-source-view.mod-cm6 .cm-table-widget th,
 .markdown-source-view.mod-cm6 .cm-table-widget td {
-  line-height: 1.55;
-  padding: 0.55em 0.85em;
+  line-height: 1.5;
+}
+
+/* 표 글자는 본문보다 한 단계 작게 (Obsidian 이 셀에 --table-text-size 를 쓴다) */
+.workspace-leaf-content[data-type="markdown"] {
+  --table-text-size: calc(var(--font-text-size) * 0.9);
 }
 
 .markdown-rendered table td,
