@@ -34,8 +34,13 @@ body {
   --line-height: 1.7;
   --line-height-normal: 1.7;
   --font-text-size: 16px;
-  --p-spacing: 1rem;
-  --heading-spacing: 1.4rem 0 0.5rem;
+  /* 읽기 모드의 문단·헤딩 간격을 편집 모드의 '빈 줄 한 칸'(글자 크기 × 줄높이 = 27.2px)에
+     맞춘다. 예전 1rem(16px)은 모드 전환 때마다 본문이 위아래로 출렁이는 원인이었다. */
+  --p-spacing: calc(var(--font-text-size) * var(--line-height));
+  /* Obsidian 의 --heading-spacing 은 '헤딩 위쪽 간격' 단일 길이다.
+     예전 값 "1.4rem 0 0.5rem" 은 단축 표기라 무효 처리되어 계산값이 0px 였다. */
+  --heading-spacing: var(--p-spacing);
+  --heading-line-height: 1.3;
   --list-spacing: 0.22rem;
 }
 
@@ -135,6 +140,15 @@ body {
   display: inline-block !important;
   height: calc(1em * var(--line-height, 1.6)) !important;
   vertical-align: middle !important;
+}
+
+/* 헤딩 줄높이 통일.
+   위의 '.cm-line 줄간격 1.7' 규칙이 편집 모드 헤딩 줄에도 걸려, 읽기 모드(약 1.2)보다
+   H1 기준 한 줄에 13px 가량 높았다. 두 모드 모두 --heading-line-height 로 고정한다.
+   (.cm-line 규칙보다 특이도가 높아야 하므로 .HyperMD-header 를 덧붙인다) */
+.workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .cm-line.HyperMD-header,
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
+  line-height: var(--heading-line-height);
 }
 
 /* 편집 모드 헤딩 폰트 크기 보장 (H1~H6 개별 크기 적용) */
@@ -278,15 +292,22 @@ body,
   opacity: 1;
 }
 
-/* 6. Blockquote sync (인용구 스타일 및 여백 통일) */
+/* 6. Blockquote sync (인용구 스타일 통일) */
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered blockquote,
 .workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .HyperMD-quote {
   border-left: 3px solid #3eb4bf;
-  margin-top: 0.8rem;
-  margin-bottom: 0.8rem;
-  padding: 0.35rem 0.9rem;
+  padding-inline: 0.9rem;
   font-style: italic;
   line-height: var(--line-height);
+}
+
+/* 세로 여백은 읽기 모드 blockquote 에만 준다.
+   편집 모드의 .HyperMD-quote 는 인용구 '한 줄마다' 붙는 클래스라, 여기에 margin/padding 을
+   주면 여러 줄 인용구가 줄마다 벌어지고 CodeMirror 줄 좌표가 어긋난다
+   (9ec7875 에서 코드블록 커서 점프를 고친 것과 같은 원인). */
+.workspace-leaf-content[data-type="markdown"] .markdown-rendered blockquote {
+  margin-block: 0.8rem;
+  padding-block: 0.35rem;
 }
 
 /* 7. Horizontal Rule (수평선 여백 통일) */
