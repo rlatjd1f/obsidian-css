@@ -394,6 +394,9 @@ body {
   --custom-search-input-text: #ffffff;
   --custom-search-input-placeholder: rgba(255, 255, 255, 0.55);
   --custom-search-input-icon: rgba(255, 255, 255, 0.65);
+  /* 코드블록 배경. 다크 모드에서 Things 가 주던 --code-block-background-d 와 같은 값이라
+     현재 화면은 그대로이고, 라이트 모드에서도 이 값으로 고정된다. */
+  --custom-code-block-bg: #282c34;
   --custom-inline-code-bg: #34445a;
   --custom-inline-code-border: #516783;
   --custom-inline-code-text: #d7f3ff;
@@ -568,12 +571,26 @@ body {
   background-color: rgba(125, 211, 252, 0.26);
 }
 
+.workspace-leaf-content[data-type="markdown"] code {
+  background-color: var(--custom-markdown-bg-soft);
+}
+
 .workspace-leaf-content[data-type="markdown"] code,
 .workspace-leaf-content[data-type="markdown"] pre,
 .workspace-leaf-content[data-type="markdown"] .HyperMD-codeblock,
 .workspace-leaf-content[data-type="markdown"] .HyperMD-codeblock-bg {
-  background-color: var(--custom-markdown-bg-soft);
   color: var(--custom-markdown-text);
+}
+
+/* 코드블록 배경 고정.
+   예전에는 위 규칙에서 pre/.HyperMD-codeblock-bg 배경을 함께 지정했지만, Things 의
+   '.theme-dark .markdown-preview-view pre:not(.frontmatter)' 등(특이도 0,3,1)에 져서
+   적용된 적이 없었다. 그 결과 배경은 모드를 따라 라이트에서 #f0f2f5 가 되고, 글자는
+   위에서 #e1e8f0 로 고정되어 대비 1.10:1 로 코드가 보이지 않았다.
+   '.workspace-leaf-content[data-type]' 를 앞에 붙여 특이도 0,4,1 로 이긴다. */
+.workspace-leaf-content[data-type="markdown"] :is(.markdown-preview-view, .markdown-rendered) pre:not(.frontmatter),
+.workspace-leaf-content[data-type="markdown"] .cm-s-obsidian div.HyperMD-codeblock-bg {
+  background-color: var(--custom-code-block-bg);
 }
 
 .workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .HyperMD-codeblock {
