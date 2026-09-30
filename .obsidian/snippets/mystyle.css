@@ -110,6 +110,21 @@ body {
   margin-bottom: 1rem !important;
 }
 
+/* 읽기 모드 코드블록 자동 줄바꿈 (가로 스크롤 없음).
+   Things 가 '.markdown-reading-view .el-pre pre' 에 white-space: pre 와 overflow-x: auto 를 줘서
+   긴 줄이 가로 스크롤바로 넘쳤다. 편집 모드는 CodeMirror 가 이미 줄바꿈하므로 읽기 모드만 맞춘다.
+   overflow-wrap: anywhere 로 공백 없는 긴 식별자도 폭에 맞춰 끊는다.
+   (복사 버튼은 Things 가 .el-pre 기준 absolute 로 두므로 위치는 그대로다) */
+.workspace-leaf-content[data-type="markdown"] .markdown-reading-view .el-pre pre,
+.workspace-leaf-content[data-type="markdown"] .markdown-reading-view .el-pre pre code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.workspace-leaf-content[data-type="markdown"] .markdown-reading-view .el-pre pre {
+  overflow-x: visible;
+}
+
 /* 2. 읽기 모드 (Reading View) 코드 블록 상하 1rem 여백 */
 .workspace-leaf-content[data-type="markdown"] .markdown-rendered pre,
 .workspace-leaf-content[data-type="markdown"] .markdown-preview-view pre,
