@@ -502,6 +502,8 @@ body {
   --custom-inline-code-border: #516783;
   --custom-inline-code-text: #d7f3ff;
   --custom-code-comment: #7ee787;
+  /* 언어 미지정 코드블록의 // 주석 (plain-code-comments 플러그인이 표시) */
+  --custom-plain-code-comment: #00ff00;
   --custom-code-punctuation: #d7e2ee;
   --custom-tab-bar-bg: #d4dde8;
   --custom-tab-active-bg: #f4f7fb;
@@ -720,6 +722,16 @@ body {
 .workspace-leaf-content[data-type="markdown"] .token.cdata,
 .workspace-leaf-content[data-type="markdown"] .cm-comment {
   color: var(--custom-code-comment);
+  font-style: italic;
+}
+
+/* 언어를 지정하지 않은 코드블록의 // 주석.
+   이런 블록은 문법 분석이 돌지 않아 주석 클래스가 생기지 않으므로,
+   .obsidian/plugins/plain-code-comments 플러그인이 // 부터 줄 끝까지에 .plain-code-comment 를 붙인다.
+   편집 모드에서는 CodeMirror 가 그 안쪽에 자체 글자 span 을 둘 수 있어 하위 요소까지 칠한다. */
+.workspace-leaf-content[data-type="markdown"] .plain-code-comment,
+.workspace-leaf-content[data-type="markdown"] .plain-code-comment * {
+  color: var(--custom-plain-code-comment);
   font-style: italic;
 }
 

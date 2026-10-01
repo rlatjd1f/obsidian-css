@@ -1,0 +1,9 @@
+{
+  "id": "plain-code-comments",
+  "name": "Plain Code Comments",
+  "version": "1.0.0",
+  "minAppVersion": "1.4.0",
+  "description": "언어를 지정하지 않은 코드블록에서 // 부터 줄 끝까지를 주석으로 표시합니다.",
+  "author": "sion",
+  "isDesktopOnly": false
+}

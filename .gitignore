@@ -18,6 +18,9 @@
 !.obsidian/plugins/obsidian-style-settings/main.js
 !.obsidian/plugins/obsidian-style-settings/manifest.json
 !.obsidian/plugins/obsidian-style-settings/styles.css
+!.obsidian/plugins/plain-code-comments/
+!.obsidian/plugins/plain-code-comments/manifest.json
+!.obsidian/plugins/plain-code-comments/main.js
 !.obsidian/snippets/
 !.obsidian/snippets/mystyle.css
 
