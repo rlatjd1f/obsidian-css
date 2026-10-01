@@ -2221,6 +2221,20 @@ body.file-tree-f1 .nav-file-title.is-active .nav-file-title-content {
    ========================================================================== */
 
 body.md-style-claude .workspace-leaf-content[data-type="markdown"] {
+  /* 글자 크기 14px (Claude 뷰어 기준).
+     body 에 두면 Obsidian 의 글꼴 크기 설정(인라인 스타일)에 질 수 있어 본문 영역에서 선언한다.
+     헤딩은 rem 단위라 본문만 줄이면 상대적으로 커지므로 같은 비율(14/16)로 함께 줄인다. */
+  --font-text-size: 14px;
+  --h1-size: 23.8px;
+  --h2-size: 21px;
+  --h3-size: 18.2px;
+  --h4-size: 16.8px;
+  --h5-size: 16.1px;
+  --h6-size: 15.4px;
+  /* 기본 스타일의 '표 = 본문 × 0.9' 를 14px 에 적용하면 12.6px 로 너무 작다.
+     Claude 뷰어처럼 표도 본문과 같은 크기로 둔다. */
+  --table-text-size: var(--font-text-size);
+
   /* 표면·글자 */
   --custom-markdown-bg: #191918;
   --custom-markdown-bg-soft: #252524;
@@ -2238,8 +2252,9 @@ body.md-style-claude .workspace-leaf-content[data-type="markdown"] {
   --h6-color: #eeece9;
   --inline-title-color: #eeece9;
 
-  /* 강조: Things 의 분홍 대신 본문색 계열 */
-  --strong-color: #eeece9;
+  /* 강조: 굵은 글씨는 밝은 코랄. 본문(#191918) 6.82, 표 칸 5.94, 표 헤더 5.17:1.
+     문법 강조 색(보라·파랑·초록·청록)과 겹치지 않는 따뜻한 계열이다. */
+  --strong-color: #e08c6c;
   --em-color: #e6e5e2;
 
   /* 목록 기호 */
