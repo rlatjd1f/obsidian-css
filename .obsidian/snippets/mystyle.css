@@ -2275,9 +2275,12 @@ body.md-style-claude .workspace-leaf-content[data-type="markdown"] {
   /* 코드: 블록은 페이지와 같은 배경에 테두리만 */
   --custom-code-block-bg: #191918;
   --custom-claude-code-border: #2c2c2c;
-  --custom-inline-code-bg: #252524;
-  --custom-inline-code-border: #2c2c2c;
-  --custom-inline-code-text: #e6e5e2;
+  /* 인라인 코드(백틱): 예전 값은 칩 배경이 페이지와 1.15:1, 글자가 본문과 같은 색이라
+     구분이 안 됐다. 배경·테두리를 한 단계 밝히고, 글자는 굵은 글씨(코랄, 16.6도)와
+     반대 계열인 연청록(189도)으로 둔다. 칩 위 대비 7.43:1. */
+  --custom-inline-code-bg: #333331;
+  --custom-inline-code-border: #4a4a47;
+  --custom-inline-code-text: #9ccfd8;
   --custom-code-comment: #8a8984;
   --custom-code-punctuation: #e6e5e2;
   --atom-purple: #c471ef;
