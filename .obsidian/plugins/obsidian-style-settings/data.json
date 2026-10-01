@@ -1,3 +1,4 @@
 {
-  "custom-obsidian-chrome@@file-tree-style": "file-tree-standard"
+  "custom-obsidian-chrome@@file-tree-style": "file-tree-standard",
+  "custom-obsidian-chrome@@markdown-style": "md-style-claude"
 }

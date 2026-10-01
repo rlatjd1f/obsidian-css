@@ -19,6 +19,20 @@ settings:
       -
         label: F1 레이싱
         value: file-tree-f1
+  -
+    id: markdown-style
+    title: 본문 스타일
+    description: 본문 markdown 영역의 색, 헤딩, 코드블록, 표, 인용구 스타일을 선택합니다.
+    type: class-select
+    allowEmpty: false
+    default: md-style-default
+    options:
+      -
+        label: 기본
+        value: md-style-default
+      -
+        label: Claude
+        value: md-style-claude
 */
 
 /* ==========================================================================
@@ -2196,4 +2210,158 @@ body.file-tree-f1 .nav-file-title.is-active:hover {
 body.file-tree-f1 .nav-file-title.is-active .nav-file-title-content {
   color: var(--f1-carbon) !important;
   font-weight: 900;
+}
+
+
+/* ==========================================================================
+   본문 스타일: Claude (Style Settings > 본문 스타일 > Claude)
+   Claude 데스크톱 앱의 마크다운 뷰어를 본뜬 본문 테마. 색은 그 화면 스크린샷의
+   픽셀에서 직접 뽑았다. 여백 체계·목록 들여쓰기·줄높이는 기본 스타일 것을 그대로 쓰고,
+   색·헤딩·코드블록·표·인용구만 바꾼다. 읽기/편집 모드에 같이 적용한다.
+   ========================================================================== */
+
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] {
+  /* 표면·글자 */
+  --custom-markdown-bg: #191918;
+  --custom-markdown-bg-soft: #252524;
+  --custom-markdown-border: #2c2c2c;
+  --custom-markdown-text: #e6e5e2;
+  --custom-markdown-muted: #b8b7ab;
+  --custom-markdown-faint: #8a8984;
+
+  /* 헤딩·제목: 색 없이 밝은 흰색 하나로 */
+  --h1-color: #eeece9;
+  --h2-color: #eeece9;
+  --h3-color: #eeece9;
+  --h4-color: #eeece9;
+  --h5-color: #eeece9;
+  --h6-color: #eeece9;
+  --inline-title-color: #eeece9;
+
+  /* 강조: Things 의 분홍 대신 본문색 계열 */
+  --strong-color: #eeece9;
+  --em-color: #e6e5e2;
+
+  /* 목록 기호 */
+  --list-marker-color: #e6e5e2;
+  --list-marker-color-collapsed: #b8b7ab;
+  --list-marker-color-hover: #eeece9;
+
+  /* 코드: 블록은 페이지와 같은 배경에 테두리만 */
+  --custom-code-block-bg: #191918;
+  --custom-claude-code-border: #2c2c2c;
+  --custom-inline-code-bg: #252524;
+  --custom-inline-code-border: #2c2c2c;
+  --custom-inline-code-text: #e6e5e2;
+  --custom-code-comment: #8a8984;
+  --custom-code-punctuation: #e6e5e2;
+  --atom-purple: #c471ef;
+  --atom-blue: #68aef8;
+  --atom-green: #89d758;
+
+  /* 표: 칸마다 배경, 칸 사이는 2px 틈 */
+  --custom-claude-cell-bg: #252524;
+  --custom-claude-header-bg: #302f30;
+
+  /* 인용구 */
+  --custom-claude-quote-line: #302f30;
+}
+
+/* 헤딩 밑줄 제거 (Things 의 H2, 스니펫의 H1) */
+body.md-style-claude .markdown-rendered :is(h1, h2),
+body.md-style-claude .markdown-preview-view :is(h1, h2) {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+body.md-style-claude .HyperMD-header.cm-line:is(.HyperMD-header-1, .HyperMD-header-2) {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* 목록 기호 (기본 스타일이 하늘색을 직접 지정하므로 같은 대상을 덮는다) */
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 :is(.cm-formatting-list-ol, .cm-formatting-list-ul),
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] .markdown-rendered :is(ol, ul) > li::marker {
+  color: var(--list-marker-color);
+  font-weight: 400;
+}
+
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .list-bullet::after,
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] .markdown-rendered .list-bullet::after {
+  background-color: var(--list-marker-color);
+}
+
+/* 인용구: 얇은 회색 선 + 흐린 글자 */
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] .markdown-rendered blockquote,
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .HyperMD-quote {
+  border-left: 2px solid var(--custom-claude-quote-line);
+  color: var(--custom-markdown-muted);
+}
+
+/* 코드블록 (읽기): 테두리 1px + 둥근 모서리 */
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] :is(.markdown-preview-view, .markdown-rendered) pre:not(.frontmatter) {
+  border: 1px solid var(--custom-claude-code-border);
+  border-radius: 8px;
+}
+
+/* 코드블록 (편집): 줄마다 테두리를 그리면 줄 높이가 1px 씩 늘어 커서 좌표가 어긋날 수 있으므로
+   (9ec7875 회귀 방지) 레이아웃에 영향 없는 inset box-shadow 로 테두리를 흉내 낸다. */
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .HyperMD-codeblock.HyperMD-codeblock-bg {
+  box-shadow:
+    inset 1px 0 0 var(--custom-claude-code-border),
+    inset -1px 0 0 var(--custom-claude-code-border);
+}
+
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .HyperMD-codeblock-begin.HyperMD-codeblock-bg {
+  box-shadow:
+    inset 1px 0 0 var(--custom-claude-code-border),
+    inset -1px 0 0 var(--custom-claude-code-border),
+    inset 0 1px 0 var(--custom-claude-code-border);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .HyperMD-codeblock-end.HyperMD-codeblock-bg {
+  box-shadow:
+    inset 1px 0 0 var(--custom-claude-code-border),
+    inset -1px 0 0 var(--custom-claude-code-border),
+    inset 0 -1px 0 var(--custom-claude-code-border);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* 숫자: 청록 (Things 는 주황) */
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] :is(.token.number, .token.boolean, .cm-number) {
+  color: #55dad8;
+}
+
+/* 표: 테두리 없이 칸마다 배경, 칸 사이 2px 틈 */
+/* Claude 뷰어처럼 표를 본문 폭 전체로 늘린다. 편집 모드는 Obsidian 이 표를 감싸는
+   .table-wrapper 를 width: fit-content 로 두므로 그것도 함께 늘린다. */
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .cm-table-widget .table-wrapper {
+  width: 100%;
+}
+
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] :is(.markdown-rendered, .cm-table-widget) table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 2px;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+}
+
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] :is(.markdown-rendered, .cm-table-widget) table :is(th, td) {
+  border: 0;
+  border-radius: 0;
+  background-color: var(--custom-claude-cell-bg);
+}
+
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] :is(.markdown-rendered, .cm-table-widget) table th {
+  background-color: var(--custom-claude-header-bg);
+  font-weight: 600;
+}
+
+body.md-style-claude .workspace-leaf-content[data-type="markdown"] :is(.markdown-rendered, .cm-table-widget) table :is(thead tr, tbody tr, tbody tr:nth-child(even), tbody tr:hover) {
+  background-color: transparent;
 }
