@@ -2401,7 +2401,7 @@ body.md-style-claude .workspace-leaf-content[data-type="markdown"] :is(.markdown
    ========================================================================== */
 
 body {
-  --custom-toc-width: 220px;
+  --custom-toc-width: 300px;
 }
 
 .workspace-leaf-content[data-type="markdown"] .view-content {
@@ -2427,7 +2427,7 @@ body {
   overflow-y: auto;
   padding: 24px 12px;
   border-inline-start: 1px solid var(--background-modifier-border);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.4;
 }
 

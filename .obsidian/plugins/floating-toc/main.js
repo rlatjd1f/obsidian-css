@@ -8,7 +8,8 @@
 const { Plugin, MarkdownView } = require("obsidian");
 
 // 이보다 좁은 칸에서는 본문이 너무 좁아지므로 목차를 숨긴다.
-const MIN_PANE_WIDTH = 700;
+// 목차 폭(mystyle.css 의 --custom-toc-width, 300px)을 빼고 본문 480px 가 남는 값이다.
+const MIN_PANE_WIDTH = 780;
 // 클릭으로 이동한 직후의 스크롤 이벤트는 강조 계산에서 무시한다.
 // 문서 끝쪽 제목은 맨 위까지 올라오지 못해, 계산하면 클릭한 제목이 아닌 다른 제목이 강조된다.
 const CLICK_HOLD_MS = 500;
