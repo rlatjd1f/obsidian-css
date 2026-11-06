@@ -1,9 +1,0 @@
-{
-  "id": "floating-toc",
-  "name": "Floating TOC",
-  "version": "1.0.0",
-  "minAppVersion": "1.4.0",
-  "description": "문서 영역 오른쪽에 목차를 항상 표시하고, 클릭하면 해당 제목으로 이동합니다.",
-  "author": "sion",
-  "isDesktopOnly": false
-}
