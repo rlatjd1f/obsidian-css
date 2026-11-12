@@ -2242,16 +2242,15 @@ body {
   --custom-search-current-line: #ff8000;
 }
 
-/* 편집 모드: CodeMirror 가 일치 부분에 .cm-searchMatch, 현재 위치에 .cm-searchMatch-selected 를 붙인다. */
-.workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .cm-searchMatch {
-  background-color: var(--custom-search-match-bg);
-  box-shadow: 0 0 0 1px var(--custom-search-match-line);
-  border-radius: 2px;
-}
-
-.workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 .cm-searchMatch.cm-searchMatch-selected {
+/* 편집 모드: Obsidian 은 CodeMirror 기본 검색(.cm-searchMatch)이 아니라 자체 데코레이션을 쓴다.
+   span.obsidian-search-match-highlight 를 붙인다(기본값: 강조색 3px 윤곽선 + 섞기 모드).
+   Enter/Shift+Enter 로 이동할 때는 현재 위치 하나만 붙으므로 읽기 모드의 '현재 위치' 색과 맞춘다.
+   (Alt+Enter 전체 찾기에서는 모든 일치가 같은 색으로 표시된다.) */
+.workspace-leaf-content[data-type="markdown"] .markdown-source-view.mod-cm6 span.obsidian-search-match-highlight {
   background-color: var(--custom-search-current-bg);
   box-shadow: 0 0 0 2px var(--custom-search-current-line);
+  border-radius: 2px;
+  mix-blend-mode: normal;
 }
 
 /* 읽기 모드: Obsidian 이 본문 위에 .search-highlight > div 를 겹쳐 그린다(현재 위치는 .is-active).
