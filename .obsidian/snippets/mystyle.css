@@ -2268,6 +2268,38 @@ body {
 }
 
 /* ==========================================================================
+   콜아웃
+   Obsidian 은 콜아웃 색을 --color-*-rgb 에서 가져오는데, 이 값과 섞기 모드(--callout-blend-mode)가
+   라이트/다크 모드에 따라 바뀐다. 본문 영역은 어두운 배경으로 고정돼 있으므로 라이트 모드에서는
+   제목색이 어두워지고 배경 칠이 darken 섞기로 사라졌다. 코드블록과 같은 Atom 계열 색으로 고정한다.
+   값은 'R, G, B' 형식이다(rgba(var(--callout-color), 0.1) 로 쓰인다). 제목 대비는 4.69:1 이상.
+   ========================================================================== */
+
+.workspace-leaf-content[data-type="markdown"] {
+  --callout-blend-mode: normal;
+  --callout-default: 97, 175, 239;    /* note, info, todo: #61afef */
+  --callout-info: 97, 175, 239;
+  --callout-todo: 97, 175, 239;
+  --callout-tip: 86, 182, 194;        /* tip, abstract, important: #56b6c2 */
+  --callout-summary: 86, 182, 194;
+  --callout-important: 86, 182, 194;
+  --callout-success: 152, 195, 121;   /* #98c379 */
+  --callout-question: 209, 154, 102;  /* question, warning: #d19a66 */
+  --callout-warning: 209, 154, 102;
+  --callout-fail: 229, 122, 130;      /* failure, danger, bug: #e57a82 */
+  --callout-error: 229, 122, 130;
+  --callout-bug: 229, 122, 130;
+  --callout-example: 204, 132, 225;   /* #cc84e1 */
+  --callout-quote: 158, 158, 158;     /* #9e9e9e */
+}
+
+/* 안쪽 여백: 마지막 문단의 아래 여백(--p-spacing)이 콜아웃 padding 에 더해져
+   위 12px / 아래 28px 로 비대칭이었다. 마지막 요소의 아래 여백을 없애 위아래를 맞춘다. */
+.workspace-leaf-content[data-type="markdown"] .callout-content > :last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
    본문 스타일: Claude (Style Settings > 본문 스타일 > Claude)
    Claude 데스크톱 앱의 마크다운 뷰어를 본뜬 본문 테마. 색은 그 화면 스크린샷의
    픽셀에서 직접 뽑았다. 여백 체계·목록 들여쓰기·줄높이는 기본 스타일 것을 그대로 쓰고,
